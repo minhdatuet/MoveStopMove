@@ -28,6 +28,10 @@ public class AnimationController : MonoBehaviour
                 {
                     _animator.SetBool("IsAttack", true); break;
                 }
+            case PlayerState.DEATH:
+                {
+                    _animator.SetBool("IsDead", true); break;
+                }
 
         }
     }
