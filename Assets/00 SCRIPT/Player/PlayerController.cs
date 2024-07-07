@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 using PlayerState = CONSTANT.PlayerState;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
@@ -28,11 +29,21 @@ public class PlayerController : MonoBehaviour
         set { radiusAttack = value; }
     }
     Transform targetEnemy;
-    [SerializeField] protected float attackForce = 2.0f;
+    [SerializeField] protected float attackForce = 2.0f; // Lực bay (tốc độ bay) của đạn
     [SerializeField] protected float attackOffset = 0.7f; // Khoảng cách từ nhân vật tới vị trí xuất phát của đạn
-    [SerializeField] protected float scaleRate = 1.1f;
-    [SerializeField] protected float currScale = 1.0f;
+    [SerializeField] protected float scaleRate = 1.1f; // Tỉ lệ phóng đại khi bắn trúng enemy
+    [SerializeField] protected float currScale = 1.0f; // Tỉ lệ phóng đại hiện tại
+    public float CurrScale
+    {
+        get { return currScale; }
+        set { currScale = value; }
+    }
     protected int level = 1;
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
     [SerializeField] protected GameObject levelDisplayPrefab;
     [SerializeField] protected GameObject levelDisplayList;
     protected LevelDisplay levelDisplay;
@@ -50,10 +61,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
-        Debug.Log(radiusAttack);
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
-        Debug.Log(bodyColor.color);
         enemyLayer = LayerMask.GetMask("Enemy");
+        SetWeaponInHand();
         DisplayLevel();
     }
 
@@ -69,6 +79,50 @@ public class PlayerController : MonoBehaviour
         _anim.UpdateAnimation(_state);
     }
 
+    public virtual void SetWeaponInHand()
+    {
+        //if (weaponInHand)
+        //{
+            //int randomWeapon = Random.Range(0, weaponInHand.transform.childCount - 1);
+            for (int j = 0; j < weaponInHand.transform.childCount; j++)
+            {
+                if (j == 3)
+                {
+                    weaponInHand.transform.GetChild(j).gameObject.SetActive(true);
+                }
+                else
+                {
+                    weaponInHand.transform.GetChild(j).gameObject.SetActive(false);
+                }
+            }
+        //}
+    }
+
+    public void SetWeapon()
+    {
+        if (weapon)
+        {
+            for (int i = 0; i < weaponInHand.transform.childCount; i++)
+            {
+                if (weaponInHand.transform.GetChild(i).gameObject.activeInHierarchy)
+                {
+                    for (int j = 0; j < weapon.transform.childCount; j ++)
+                    {
+                        if (weapon.transform.GetChild(j).gameObject.name.Equals(weaponInHand.transform.GetChild(i).gameObject.name))
+                        {
+                            weapon.transform.GetChild(j).gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            weapon.transform.GetChild(j).gameObject.SetActive(false);
+                        }
+                    }
+                    break;
+                }
+                
+            }
+        }
+    }
     
 
     public virtual void Move()
@@ -116,13 +170,21 @@ public class PlayerController : MonoBehaviour
             } 
             else
             {
-                targetEnemy.GetChild(4).gameObject.SetActive(false);
+                if (targetEnemy)
+                {
+                    targetEnemy.GetChild(4).gameObject.SetActive(false);
+                }
+                
             }
         }
         
-        
     }
 
+    private IEnumerator WaitAnimationAttack()
+    {
+        yield return new WaitForSeconds(0.3f);
+        _anim.attacking = false;
+    }
     public void CheckForEnemiesAndAttack()
     {
         if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy)
@@ -131,8 +193,10 @@ public class PlayerController : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack, enemyLayer);
             if (hitColliders.Length > 1)
             {
+                _anim.attacking = true;
                 _state = PlayerState.ATTACK;
                 _anim.UpdateAnimation(_state);
+                StartCoroutine(WaitAnimationAttack());
                 // Tìm enemy gần nhất
                 Transform closestEnemy = hitColliders[0].gameObject != gameObject ? hitColliders[0].transform : hitColliders[1].transform;
                 float minDistance = Vector3.Distance(transform.position, closestEnemy.position);
@@ -192,14 +256,21 @@ public class PlayerController : MonoBehaviour
         weapon.GetComponent<WeaponController>().Attacker = this.gameObject;
         weapon.transform.localScale *= currScale;
         weapon.SetActive(true);
-        
+        SetWeapon();
     }
 
     public void ScaleCharacter()
     {
+        if (gameObject.CompareTag("Player"))
+        {
+            float fov = Camera.main.fieldOfView;
+            fov += 5f;
+            Camera.main.fieldOfView = fov;
+        }
         level++;
         if (levelDisplay)
         {
+            //levelDisplay.transform.localScale *= scaleRate;
             levelDisplay.SetLevel(level);
             levelDisplay.offset *= scaleRate;
         } 
@@ -239,6 +310,7 @@ public class PlayerController : MonoBehaviour
         levelDisplay = levelDisplayObject.GetComponent<LevelDisplay>();
         levelDisplay.target = this.transform;
         levelDisplay.offset = new Vector3(0, 1.3f, 0);
-        levelDisplay.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
+        levelDisplay.transform.localRotation = Quaternion.identity;
+        levelDisplay.transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
     }
 }

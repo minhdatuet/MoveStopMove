@@ -5,19 +5,22 @@ using PlayerState = CONSTANT.PlayerState;
 public class AnimationController : MonoBehaviour
 {
     Animator _animator;
+    public bool attacking;
     // Start is called before the first frame update
     void Start()
     {
+        attacking = false;
         _animator = GetComponent<Animator>();
     }
 
-    public void UpdateAnimation(CONSTANT.PlayerState playerState)
+    public void UpdateAnimation(PlayerState playerState)
     {
         switch (playerState)
         {
             case PlayerState.IDLE:
                 {
-                    _animator.SetBool("IsIdle", true); break;
+                    _animator.SetBool("IsIdle", true); 
+                    if (!attacking) _animator.SetBool("IsAttack", false); break;
                 }
             case PlayerState.RUN:
                 {
@@ -26,7 +29,7 @@ public class AnimationController : MonoBehaviour
                 }
             case PlayerState.ATTACK:
                 {
-                    _animator.SetBool("IsAttack", true); break;
+                    if (attacking) _animator.SetBool("IsAttack", true); break;
                 }
             case PlayerState.DEATH:
                 {

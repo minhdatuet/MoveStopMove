@@ -11,7 +11,6 @@ public class TextManager : Singleton<TextManager>
     // Start is called before the first frame update
     void Start()
     {
-        //enemyList = GameObject.Find("EnemyList");
         aliveEnemy = 50;
         aliveText.text = "ALIVE: " + aliveEnemy.ToString();
     }
@@ -19,7 +18,6 @@ public class TextManager : Singleton<TextManager>
     // Update is called once per frame
     void Update()
     {
-        //aliveEnemy = enemyList.transform.childCount;
         aliveText.text = "ALIVE: " + aliveEnemy.ToString();
     }
 

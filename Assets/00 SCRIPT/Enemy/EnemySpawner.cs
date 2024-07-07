@@ -7,11 +7,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int numberOfEnemies = 10; // Số lượng enemy cần tạo
     [SerializeField] float mapSize = CONSTANT.MAP_SIZE; // Kích thước của bản đồ
     [SerializeField] Transform player;
+    PlayerController playerController;
     [SerializeField] GameObject enemyList;
     [SerializeField] Material[] enemyMaterials;
 
     void Start()
     {
+        playerController = player.GetComponent<PlayerController>();
         SpawnEnemies();
     }
 
@@ -62,8 +64,15 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator SetEnemyLevel(GameObject newEnemy)
     {
         yield return null;
-
-        int randomLevel = Random.Range(0, 4);
+        int randomLevel;
+        if (playerController.Level < 4)
+        {
+            randomLevel = Random.Range(0, 4);
+        } else
+        {
+            randomLevel = Random.Range(playerController.Level - 3, playerController.Level + 1);
+        }
+        
         for (int j = 0; j < randomLevel; j++)
         {
             newEnemy.gameObject.GetComponent<EnemyController>().ScaleCharacter();

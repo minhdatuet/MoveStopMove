@@ -18,10 +18,6 @@ public class CameraController : Singleton<CameraController>
 
         CONSTANT.ANGLE_SPLIT_SCREEN = Mathf.Atan2(CONSTANT.SCREEN_HEIGHT, CONSTANT.SCREEN_WIDTH) * Mathf.Rad2Deg;
         offset = transform.position;
-        if (player == null)
-        {
-            Debug.LogError("Player not assigned.");
-        }
     }
 
     void LateUpdate()

@@ -9,6 +9,7 @@ public class WeaponController : MonoBehaviour
     // Start is called before the first frame update
     float radiusAttack;
     [SerializeField] GameObject attacker;
+    [SerializeField] float rotationSpeed = 720f;
     public GameObject Attacker
     {  
         get { return attacker; }  
@@ -25,6 +26,7 @@ public class WeaponController : MonoBehaviour
     void OnEnable()
     {
         initPos = transform.position;
+
         if (attacker != null)
         {
             if (attacker.tag.Equals("Player"))
@@ -47,9 +49,14 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameObject.activeInHierarchy)
+        {
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+        }
+
         if (Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.4f)
         {
-            if (attacker.tag.Equals("Player"))
+            if (attacker && attacker.tag.Equals("Player"))
             {
                 attacker.GetComponent<PlayerController>().HittedTarget();
             }
@@ -57,7 +64,7 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         
         if (collision.gameObject.layer == (int)CONSTANT.Layer.Enemy)
@@ -65,19 +72,21 @@ public class WeaponController : MonoBehaviour
             Debug.Log(collision.gameObject.name);
             if (attacker != null)
             {
-                if (attacker.tag.Equals("Player"))
-                {
-                    attacker.GetComponent<PlayerController>().HittedTarget();
-                }
+                
                 attacker.GetComponent<PlayerController>().ScaleCharacter();
             }
             
-            gameObject.SetActive(false);
-            if (!collision.gameObject.tag.Equals("Player"))
-            {
+            
+            //if (!collision.gameObject.tag.Equals("Player"))
+            //{
                 TextManager.Instance.UpdateAliveEnemy();
                 collision.gameObject.GetComponent<PlayerController>().IsDead = true;
-            }
+            //}
         }
+        if (attacker && attacker.tag.Equals("Player"))
+        {
+            attacker.GetComponent<PlayerController>().HittedTarget();
+        }
+        gameObject.SetActive(false);
     }
 }

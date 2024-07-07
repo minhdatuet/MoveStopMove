@@ -10,13 +10,13 @@ public class LevelDisplay : MonoBehaviour
 
     void Start()
     {
-        // Tìm TextMeshPro bên trong đối tượng
+        // Tìm Text bên trong đối tượng
         levelText = GetComponentInChildren<Text>();
     }
 
     void Update()
     {
-        // Cập nhật vị trí của TextMeshPro để nó di chuyển theo nhân vật
+        // Cập nhật vị trí của Text để di chuyển theo nhân vật
         if (target != null)
         {
             transform.position = target.position + offset + new Vector3(0, 0.2f, 0);
