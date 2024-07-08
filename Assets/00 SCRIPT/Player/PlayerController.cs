@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
     }
     public void CheckForEnemiesAndAttack()
     {
-        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy)
+        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack) 
         {
             _anim.attacking = true;
             _state = PlayerState.ATTACK;
