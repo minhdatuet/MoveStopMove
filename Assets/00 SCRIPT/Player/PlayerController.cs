@@ -47,6 +47,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] protected GameObject levelDisplayPrefab;
     [SerializeField] protected GameObject levelDisplayList;
     protected LevelDisplay levelDisplay;
+    [SerializeField] protected GameObject nameDisplayPrefab;
+    [SerializeField] protected GameObject nameDisplayList;
+    protected NameDisplay nameDisplay;
+    public NameDisplay NameDisplay
+    {
+        get { return nameDisplay; }
+        set { nameDisplay = value; }
+    }
     protected Material bodyColor;
 
     protected bool canAttack = false;
@@ -64,7 +72,7 @@ public class PlayerController : MonoBehaviour
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
         SetWeaponInHand();
-        DisplayLevel();
+        DisplayLevelAndName();
     }
 
     void Update()
@@ -269,7 +277,8 @@ public class PlayerController : MonoBehaviour
             //levelDisplay.transform.localScale *= scaleRate;
             levelDisplay.SetLevel(level);
             levelDisplay.offset *= scaleRate;
-        } 
+        }
+        nameDisplay.offset *= scaleRate;
 
         currScale *= scaleRate;
         this.transform.localScale *= scaleRate;
@@ -298,7 +307,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void DisplayLevel()
+    public void DisplayLevelAndName()
     {
         // Tạo đối tượng Level Display từ Prefab
         GameObject levelDisplayObject = Instantiate(levelDisplayPrefab, transform.position, Quaternion.identity, levelDisplayList.transform);
@@ -307,5 +316,14 @@ public class PlayerController : MonoBehaviour
         levelDisplay.offset = new Vector3(0, 1.3f, 0);
         levelDisplay.transform.localRotation = Quaternion.identity;
         levelDisplay.transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
+
+        // Tạo đối tượng Level Display từ Prefab
+        GameObject nameDisplayObject = Instantiate(nameDisplayPrefab, transform.position, Quaternion.identity, nameDisplayList.transform);
+        nameDisplay = nameDisplayObject.GetComponent<NameDisplay>();
+        nameDisplay.target = this.transform;
+        nameDisplay.offset = new Vector3(0, 1.4f, 0);
+        nameDisplay.transform.localRotation = Quaternion.identity;
+        nameDisplay.SetName("You");
+        nameDisplay.GetComponent<Text>().color = bodyColor.color;
     }
 }

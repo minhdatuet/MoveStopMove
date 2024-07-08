@@ -77,11 +77,11 @@ public class WeaponController : MonoBehaviour
             }
             
             
-            //if (!collision.gameObject.tag.Equals("Player"))
-            //{
+            if (!collision.gameObject.tag.Equals("Player"))
+            {
                 TextManager.Instance.UpdateAliveEnemy();
                 collision.gameObject.GetComponent<PlayerController>().IsDead = true;
-            //}
+            }
         }
         if (attacker && attacker.tag.Equals("Player"))
         {

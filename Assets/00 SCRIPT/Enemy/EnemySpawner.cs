@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     PlayerController playerController;
     [SerializeField] GameObject enemyList;
     [SerializeField] Material[] enemyMaterials;
+    string[] nameList = { "Enemy1", "Enemy2", "Enemy3", "Enemy4", "Enemy5", "Enemy6", "Enemy7", "Enemy8", "Enemy9", "Enemy10" };
 
     void Start()
     {
@@ -77,6 +78,9 @@ public class EnemySpawner : MonoBehaviour
         {
             newEnemy.gameObject.GetComponent<EnemyController>().ScaleCharacter();
         }
+
+        int randomName = Random.Range(0, 9);
+        newEnemy.gameObject.GetComponent<EnemyController>().NameDisplay.SetName(nameList[randomName]);
     }
 
     void SpawnAdditionalEnemy()
