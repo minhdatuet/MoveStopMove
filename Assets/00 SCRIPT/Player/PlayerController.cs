@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
         if (!isDead)
         {
             Move();
+            FindTargetEnemy();
             CheckForEnemiesAndAttack();
         }
         CheckState();
@@ -155,11 +156,6 @@ public class PlayerController : MonoBehaviour
         if (canAttack)
         {
             canAttack = false;
-            if (targetEnemy && gameObject.tag.Equals("Player"))
-            {
-                Debug.Log("TARGETED");
-                targetEnemy.GetChild(4).gameObject.SetActive(true);
-            }
             
             yield return new WaitForSeconds(0.2f);
             if (_state != PlayerState.RUN && targetEnemy)
@@ -168,14 +164,6 @@ public class PlayerController : MonoBehaviour
                 weaponInHand.gameObject.SetActive(false);
                 Attack();
             } 
-            else
-            {
-                if (targetEnemy)
-                {
-                    targetEnemy.GetChild(4).gameObject.SetActive(false);
-                }
-                
-            }
         }
         
     }
@@ -185,47 +173,55 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         _anim.attacking = false;
     }
+
+    public void FindTargetEnemy()
+    {
+        if ( targetEnemy && gameObject.tag.Equals("Player"))
+        {
+            targetEnemy.GetChild(4).gameObject.SetActive(false);
+        }
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack, enemyLayer);
+        if (hitColliders.Length > 1)
+        {
+            // Tìm enemy gần nhất
+            Transform closestEnemy = hitColliders[0].gameObject != gameObject ? hitColliders[0].transform : hitColliders[1].transform;
+            float minDistance = Vector3.Distance(transform.position, closestEnemy.position);
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.gameObject != gameObject)
+                {
+                    float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
+                    if (distance < minDistance)
+                    {
+                        closestEnemy = hitCollider.transform;
+                        minDistance = distance;
+                    }
+                }
+            }
+            targetEnemy = closestEnemy;
+            if (gameObject.tag.Equals("Player")) targetEnemy.GetChild(4).gameObject.SetActive(true);
+        }
+    }
     public void CheckForEnemiesAndAttack()
     {
         if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy)
         {
-
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack, enemyLayer);
-            if (hitColliders.Length > 1)
+            _anim.attacking = true;
+            _state = PlayerState.ATTACK;
+            _anim.UpdateAnimation(_state);
+            StartCoroutine(WaitAnimationAttack());               
+              
+            if (targetEnemy && !targetEnemy.gameObject.GetComponent<PlayerController>().IsDead)
             {
-                _anim.attacking = true;
-                _state = PlayerState.ATTACK;
-                _anim.UpdateAnimation(_state);
-                StartCoroutine(WaitAnimationAttack());
-                // Tìm enemy gần nhất
-                Transform closestEnemy = hitColliders[0].gameObject != gameObject ? hitColliders[0].transform : hitColliders[1].transform;
-                float minDistance = Vector3.Distance(transform.position, closestEnemy.position);
+                // Quay về phía enemy
+                Vector3 directionToEnemy = (targetEnemy.transform.position - transform.position).normalized;
+                directionToEnemy.y = 0;
+                transform.rotation = Quaternion.LookRotation(directionToEnemy);
 
-                foreach (Collider hitCollider in hitColliders)
-                {
-                    if (hitCollider.gameObject != gameObject)
-                    {
-                        float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
-                        if (distance < minDistance)
-                        {
-                            closestEnemy = hitCollider.transform;
-                            minDistance = distance;
-                        }
-                    }
-                }
-                targetEnemy = closestEnemy;
-                
-                if (!targetEnemy.gameObject.GetComponent<PlayerController>().IsDead)
-                {
-                    // Quay về phía enemy
-                    Vector3 directionToEnemy = (closestEnemy.position - transform.position).normalized;
-                    directionToEnemy.y = 0;
-                    transform.rotation = Quaternion.LookRotation(directionToEnemy);
-
-                    StartCoroutine(WaitAndAttack());
-                }
-                
+                StartCoroutine(WaitAndAttack());
             }
+                
         }
     }
 
@@ -283,7 +279,6 @@ public class PlayerController : MonoBehaviour
     public void HittedTarget()
     {
         weaponInHand.gameObject.SetActive(true);
-        if (targetEnemy && gameObject.tag.Equals("Player")) targetEnemy.GetChild(4).gameObject.SetActive(false);
     }
     public virtual void CheckState()
     {

@@ -67,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
         int randomLevel;
         if (playerController.Level < 4)
         {
-            randomLevel = Random.Range(0, 4);
+            randomLevel = Random.Range(1, 4);
         } else
         {
             randomLevel = Random.Range(playerController.Level - 3, playerController.Level + 1);

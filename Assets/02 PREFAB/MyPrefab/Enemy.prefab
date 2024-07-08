@@ -1621,7 +1621,7 @@ MonoBehaviour:
     type: 3}
   weaponList: {fileID: 0}
   weaponInHand: {fileID: 8497639860768797305}
-  speed: 2
+  speed: 4
   radiusAttack: 0
   attackForce: 3
   attackOffset: 0.7

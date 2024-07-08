@@ -47,6 +47,7 @@ public class EnemyController : PlayerController
             {
                 Move();
             }
+            FindTargetEnemy();
             CheckForEnemiesAndAttack();
             CheckEnemyInScreen();
 
@@ -189,7 +190,7 @@ public class EnemyController : PlayerController
             else if ((angle > 90 + CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 180) || (angle <= -CONSTANT.ANGLE_SPLIT_SCREEN - 90 && angle >= -180))
             {
                 posInScreen = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(-Mathf.Deg2Rad * angle), 15f, Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, 0.25f, 0) * playerController.CurrScale;
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, 0.1f, 0) * playerController.CurrScale;
             }
             else
             {

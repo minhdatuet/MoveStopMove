@@ -54,9 +54,9 @@ public class WeaponController : MonoBehaviour
             transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
         }
 
-        if (Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.4f)
+        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.4f * attacker.GetComponent<PlayerController>().CurrScale)
         {
-            if (attacker && attacker.tag.Equals("Player"))
+            if (attacker.tag.Equals("Player"))
             {
                 attacker.GetComponent<PlayerController>().HittedTarget();
             }
