@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AdaptivePerformance;
 using PlayerState = CONSTANT.PlayerState;
+using UnityEngine.AI;
 
 public class EnemyController : PlayerController
 {
-    [SerializeField] float minMoveDuration = 2.0f;
-    [SerializeField] float maxMoveDuration = 4.0f;
     [SerializeField] float minIdleDuration = 2.0f;
     [SerializeField] float maxIdleDuration = 3.0f;
 
-    Vector3 randomDirection;
     bool isMoving = true;
     [SerializeField] GameObject pointToEnemyPrefab;
     GameObject secondLevelDisplay;
@@ -20,6 +18,8 @@ public class EnemyController : PlayerController
     GameObject pointToEnemyList;
     GameObject player;
     PlayerController playerController;
+    [SerializeField] NavMeshAgent agent;
+
     void Start()
     {
         player = CameraController.Instance.player;
@@ -36,28 +36,23 @@ public class EnemyController : PlayerController
         DisplayLevel();
         SpawnPointToEnemy();
         StartCoroutine(MoveRoutine());
-        
     }
+
     void Update()
     {
         CheckDeath();
         if (!isDead)
         {
-            if (isMoving)
-            {
-                Move();
-            }
             FindTargetEnemy();
             CheckForEnemiesAndAttack();
             CheckEnemyInScreen();
-
         }
         GetDirPointToEnemy();
         CheckState();
         _anim.UpdateAnimation(_state);
     }
 
-    //Tạo mũi tên chỉ đến enemy
+    // Tạo mũi tên chỉ đến enemy
     public void SpawnPointToEnemy()
     {
         if (pointToEnemyPrefab && levelDisplayPrefab)
@@ -72,21 +67,42 @@ public class EnemyController : PlayerController
             secondLevelDisplay.transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
         }
     }
+
     private IEnumerator MoveRoutine()
     {
         while (true)
         {
-            // Di chuyển trong khoảng thời gian ngẫu nhiên
+            // Di chuyển tới vị trí ngẫu nhiên trong bán kính 8-10 đơn vị
             isMoving = true;
-            randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-            float randomMoveDuration = Random.Range(minMoveDuration, maxMoveDuration);
-            yield return new WaitForSeconds(randomMoveDuration);
+            Vector3 randomPosition = GetRandomPositionWithinRadius(8f, 10f);
+            agent.SetDestination(randomPosition);
+
+            // Chờ đến khi agent tới vị trí chỉ định
+            while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+            {
+                yield return null;
+            }
 
             // Đứng im trong khoảng thời gian ngẫu nhiên
             isMoving = false;
             float randomIdleDuration = Random.Range(minIdleDuration, maxIdleDuration);
             yield return new WaitForSeconds(randomIdleDuration);
         }
+    }
+
+    private Vector3 GetRandomPositionWithinRadius(float minRadius, float maxRadius)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * maxRadius;
+        randomDirection += transform.position;
+
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxRadius, 1))
+        {
+            finalPosition = hit.position;
+        }
+
+        return finalPosition;
     }
 
     public override void SetWeaponInHand()
@@ -110,21 +126,7 @@ public class EnemyController : PlayerController
 
     public override void Move()
     {
-        Vector3 movement = randomDirection * speed * Time.deltaTime;
-
-        if (movement != Vector3.zero)
-        {
-            Vector3 newPosition = transform.position + movement;
-
-            //Kiểm tra để nhân vật không đi ra ngoài map
-            newPosition.x = Mathf.Clamp(newPosition.x, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
-            newPosition.z = Mathf.Clamp(newPosition.z, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
-
-            transform.position = newPosition;
-
-            Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, speed * 100 * Time.deltaTime);
-        }
+        // Không cần thiết khi dùng NavMeshAgent để di chuyển
     }
 
     public override void CheckState()
@@ -149,24 +151,27 @@ public class EnemyController : PlayerController
     public void CheckEnemyInScreen()
     {
         Vector3 posEnemyInScreen = Camera.main.WorldToScreenPoint(transform.position);
-        
+
         if (posEnemyInScreen.x > Screen.width || posEnemyInScreen.x < 0 || posEnemyInScreen.y > Screen.height || posEnemyInScreen.y < 0)
         {
             pointToEnemy.SetActive(true);
             secondLevelDisplay.SetActive(true);
-        } else
+        }
+        else
         {
             pointToEnemy.SetActive(false);
             secondLevelDisplay.SetActive(false);
         }
     }
+
     public void GetDirPointToEnemy()
     {
         if (isDead)
         {
             Destroy(pointToEnemy);
             return;
-        } else if (player)
+        }
+        else if (player)
         {
             Vector3 dirPoint = (this.transform.position - player.transform.position).normalized;
             float angle = Mathf.Atan2(dirPoint.x, dirPoint.z) * Mathf.Rad2Deg;
@@ -185,7 +190,7 @@ public class EnemyController : PlayerController
             else if (angle > 90 - CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 90 + CONSTANT.ANGLE_SPLIT_SCREEN)
             {
                 posInScreen = new Vector3(Screen.width - 25f, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 - angle)), Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(-0.15f * playerController.CurrScale, -0.2f, 0) ;
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(-0.15f * playerController.CurrScale, -0.2f, 0);
             }
             else if ((angle > 90 + CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 180) || (angle <= -CONSTANT.ANGLE_SPLIT_SCREEN - 90 && angle >= -180))
             {
@@ -195,12 +200,11 @@ public class EnemyController : PlayerController
             else
             {
                 posInScreen = new Vector3(25f, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 + angle)), Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.15f * playerController.CurrScale, -0.2f, 0) ;
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.15f * playerController.CurrScale, -0.2f, 0);
             }
 
             // Đặt vị trí của pointToEnemy theo vị trí trên màn hình đã chuyển đổi sang thế giới
             pointToEnemy.transform.position = Camera.main.ScreenToWorldPoint(posInScreen);
         }
-        
     }
 }
