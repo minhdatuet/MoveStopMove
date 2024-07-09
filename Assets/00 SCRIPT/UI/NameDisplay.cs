@@ -19,13 +19,13 @@ public class NameDisplay : MonoBehaviour
     void Update()
     {
         // Cập nhật vị trí của Text để di chuyển theo nhân vật
-        if (target != null)
+        if (target.gameObject.activeInHierarchy)
         {
             transform.position = target.position + offset + new Vector3(0, 0.4f, 0);
         }
         else
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

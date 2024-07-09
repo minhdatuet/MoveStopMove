@@ -10,7 +10,19 @@ public class EnemySpawner : MonoBehaviour
     PlayerController playerController;
     [SerializeField] GameObject enemyList;
     [SerializeField] Material[] enemyMaterials;
-    string[] nameList = { "Enemy1", "Enemy2", "Enemy3", "Enemy4", "Enemy5", "Enemy6", "Enemy7", "Enemy8", "Enemy9", "Enemy10" };
+    string[] nameList = new string[10]
+        {
+            "Goblin",
+            "Orc",
+            "Troll",
+            "Vampire",
+            "Zombie",
+            "Skeleton",
+            "Werewolf",
+            "Dark Elf",
+            "Ogre",
+            "Demon"
+        };
 
     void Start()
     {
@@ -26,7 +38,40 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            SpawnEnemy();
+            // Tạo ngẫu nhiên tọa độ x và z trong phạm vi bản đồ
+            float x = Random.Range(-mapSize / 2, mapSize / 2);
+            float z = Random.Range(-mapSize / 2, mapSize / 2);
+
+            if (player)
+            {
+                // Tọa độ y là 0
+                Vector3 spawnPosition = player.position + new Vector3(x, 0, z);
+                //Kiểm tra để nhân vật không tạo ra ở ngoài map
+                spawnPosition.x = Mathf.Clamp(spawnPosition.x, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
+                spawnPosition.z = Mathf.Clamp(spawnPosition.z, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
+
+                // Tạo enemy tại vị trí ngẫu nhiên
+                GameObject newEnemy = ObjectPooling.Instance.GetObject(enemyPrefab.gameObject, enemyList.gameObject);
+                if (newEnemy)
+                {
+                    newEnemy.transform.position = spawnPosition;
+                    newEnemy.gameObject.SetActive(true);
+                }
+
+                Material material = enemyMaterials[i];
+
+                // Gán material cho enemy
+                Renderer enemyRenderer = newEnemy.transform.GetChild(1).GetComponent<Renderer>();
+                if (enemyRenderer != null)
+                {
+                    enemyRenderer.material = material;
+                }
+                
+
+                StartCoroutine(SetEnemyLevel(newEnemy));
+                StartCoroutine(SetEnemyName(newEnemy, i));
+            }
+            
         }
     }
 
@@ -40,18 +85,16 @@ public class EnemySpawner : MonoBehaviour
         {
             // Tọa độ y là 0
             Vector3 spawnPosition = player.position + new Vector3(x, 0, z);
+            //Kiểm tra để nhân vật không tạo ra ở ngoài map
+            spawnPosition.x = Mathf.Clamp(spawnPosition.x, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
+            spawnPosition.z = Mathf.Clamp(spawnPosition.z, -CONSTANT.MAP_SIZE / 2 + 0.5f, CONSTANT.MAP_SIZE / 2 - 0.5f);
 
             // Tạo enemy tại vị trí ngẫu nhiên
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, enemyList.transform);
-
-            // Chọn ngẫu nhiên một material từ mảng
-            Material randomMaterial = enemyMaterials[Random.Range(0, enemyMaterials.Length)];
-
-            // Gán material cho enemy
-            Renderer enemyRenderer = newEnemy.transform.GetChild(1).GetComponent<Renderer>();
-            if (enemyRenderer != null)
+            GameObject newEnemy = ObjectPooling.Instance.GetObject(enemyPrefab.gameObject, enemyList.gameObject);
+            if (newEnemy)
             {
-                enemyRenderer.material = randomMaterial;
+                newEnemy.transform.position = spawnPosition;
+                newEnemy.gameObject.SetActive(true);
             }
 
             StartCoroutine(SetEnemyLevel(newEnemy));
@@ -74,18 +117,34 @@ public class EnemySpawner : MonoBehaviour
             randomLevel = Random.Range(playerController.Level - 3, playerController.Level + 1);
         }
         
-        for (int j = 0; j < randomLevel; j++)
+        for (int j = 1; j < randomLevel; j++)
         {
             newEnemy.gameObject.GetComponent<EnemyController>().ScaleCharacter();
         }
 
-        int randomName = Random.Range(0, 9);
-        newEnemy.gameObject.GetComponent<EnemyController>().NameDisplay.SetName(nameList[randomName]);
+        
+
+    }
+
+    IEnumerator SetEnemyName(GameObject newEnemy, int index)
+    {
+        yield return null;
+        if (newEnemy) newEnemy.gameObject.GetComponent<EnemyController>().NameDisplay.SetName(nameList[index]);
+    }
+    
+    private int CountEnemiesInMap()
+    {
+        int count = 0;
+        for (int i = 0; i < enemyList.transform.childCount; i++)
+        {
+            if (enemyList.transform.GetChild(i).gameObject.activeInHierarchy) count++;
+        }
+        return count;
     }
 
     void SpawnAdditionalEnemy()
     {
-        if (enemyList.transform.childCount < 10)
+        if (CountEnemiesInMap() < 10 && TextManager.Instance.AliveEnemy > 10)
         {
             SpawnEnemy();
         }

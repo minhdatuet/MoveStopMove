@@ -1311,6 +1311,41 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1432676816113147955}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &795913373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795913374}
+  m_Layer: 5
+  m_Name: NameList
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &795913374
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795913373}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1337646647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &897691363 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 47c5647b1ac791e4f94e83afb9095d5b,
@@ -1528,9 +1563,13 @@ MonoBehaviour:
   enemyMaterials:
   - {fileID: 2100000, guid: b04fc28befd79694b9788eed8b0232e3, type: 2}
   - {fileID: 2100000, guid: cb7f59f30acd76e47ba0281b3d7d05cc, type: 2}
+  - {fileID: 2100000, guid: 8f72630bb5bf246488eb83fc1815321c, type: 2}
   - {fileID: 2100000, guid: 69a8e8eaced2c904fbdd5e6b2589c444, type: 2}
+  - {fileID: 2100000, guid: 28f77b7edadd9b14d990e2ae175a89ee, type: 2}
+  - {fileID: 2100000, guid: e5c61b04eb680d34eb03571c22c60b39, type: 2}
   - {fileID: 2100000, guid: b733a10115a1e9842a6cb3930cb1869a, type: 2}
   - {fileID: 2100000, guid: 6d046f3408202934baa1697d0f0e986a, type: 2}
+  - {fileID: 2100000, guid: c866a726516a5974fa0e99cd566bcd86, type: 2}
   - {fileID: 2100000, guid: 22a1db13c8987a241ba07a525230ff14, type: 2}
 --- !u!4 &1031528361 stripped
 Transform:
@@ -2001,7 +2040,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
+  m_UpdateRectTransformForStandalone: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2021,6 +2060,7 @@ RectTransform:
   - {fileID: 42921390}
   - {fileID: 621252081}
   - {fileID: 1688257043}
+  - {fileID: 795913374}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2950,6 +2990,9 @@ MonoBehaviour:
   levelDisplayPrefab: {fileID: 4148491452526540306, guid: 3edc72c1ef5902540a91ed987eedf4ea,
     type: 3}
   levelDisplayList: {fileID: 1688257042}
+  nameDisplayPrefab: {fileID: 5413310538152729119, guid: dc962403b3f05d44bbe36b885b57de81,
+    type: 3}
+  nameDisplayList: {fileID: 795913373}
 --- !u!54 &1792597833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2975,7 +3018,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!4 &1792597835 stripped
 Transform:

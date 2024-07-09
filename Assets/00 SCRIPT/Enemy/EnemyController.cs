@@ -25,7 +25,7 @@ public class EnemyController : PlayerController
     {
         player = CameraController.Instance.player;
         playerController = player.GetComponent<PlayerController>();
-        radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
+        
         Debug.Log(radiusAttack);
         levelDisplayList = GameObject.Find("LevelList");
         nameDisplayList = GameObject.Find("NameList");
@@ -33,6 +33,7 @@ public class EnemyController : PlayerController
         weaponList = GameObject.Find("WeaponList");
         pointToEnemyList = GameObject.Find("PointEnemyList");
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
+        radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
         Debug.Log(bodyColor.color);
         SetWeaponInHand();
         DisplayLevelAndName();
@@ -54,6 +55,38 @@ public class EnemyController : PlayerController
         _anim.UpdateAnimation(_state);
     }
 
+    private void OnEnable()
+    {
+        SetWeaponInHand();
+        _state = PlayerState.IDLE;
+        if (levelDisplay) levelDisplay.gameObject.SetActive(true);
+        if (nameDisplay) nameDisplay.gameObject.SetActive(true);
+        if (pointToEnemy) pointToEnemy.gameObject.SetActive(true);
+        if (secondLevelDisplay) secondLevelDisplay.gameObject.SetActive(true);
+        radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
+        StartCoroutine(MoveRoutine());
+    }
+
+    private void OnDisable()
+    {
+        isDead = false;
+        if (levelDisplay)
+        {
+            level = 1;
+            //levelDisplay.transform.localScale *= scaleRate;
+            levelDisplay.SetLevel(level);
+            levelDisplay.offset *= 1.0f/currScale;
+        }
+        if (nameDisplay)
+        {
+            nameDisplay.offset *= 1.0f/currScale;
+        }
+        this.transform.localScale *= 1.0f/currScale;
+        radiusAttack *= 1.0f/currScale;
+        currScale = 1.0f;
+        canAttack = false;
+        
+    }
     // Tạo mũi tên chỉ đến enemy
     public void SpawnPointToEnemy()
     {
@@ -112,30 +145,34 @@ public class EnemyController : PlayerController
 
     private Vector3 GetRandomPositionWithinRadius(float minRadius, float maxRadius)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * maxRadius;
-        randomDirection += transform.position;
-
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-
-        // Thử tìm vị trí hợp lệ trong bán kính tối đa
-        if (NavMesh.SamplePosition(randomDirection, out hit, maxRadius, 1))
+        if (gameObject)
         {
-            finalPosition = hit.position;
-        }
-        else
-        {
-            // Nếu không tìm thấy vị trí hợp lệ, quay lại vị trí ban đầu
-            finalPosition = transform.position;
-        }
+            Vector3 randomDirection = Random.insideUnitSphere * maxRadius;
+            randomDirection += transform.position;
 
-        // Kiểm tra nếu finalPosition nằm trong bán kính tối thiểu
-        if (Vector3.Distance(transform.position, finalPosition) < minRadius)
-        {
-            finalPosition = GetRandomPositionWithinRadius(minRadius, maxRadius); // Gọi đệ quy cho đến khi tìm được vị trí hợp lệ
-        }
+            NavMeshHit hit;
+            Vector3 finalPosition = Vector3.zero;
 
-        return finalPosition;
+            // Thử tìm vị trí hợp lệ trong bán kính tối đa
+            if (NavMesh.SamplePosition(randomDirection, out hit, maxRadius, 1))
+            {
+                finalPosition = hit.position;
+            }
+            else
+            {
+                // Nếu không tìm thấy vị trí hợp lệ, quay lại vị trí ban đầu
+                finalPosition = transform.position;
+            }
+
+            // Kiểm tra nếu finalPosition nằm trong bán kính tối thiểu
+            if (Vector3.Distance(transform.position, finalPosition) < minRadius)
+            {
+                finalPosition = GetRandomPositionWithinRadius(minRadius, maxRadius); // Gọi đệ quy cho đến khi tìm được vị trí hợp lệ
+            }
+
+            return finalPosition;
+        }
+        return Vector3.zero;
     }
 
 
@@ -201,9 +238,10 @@ public class EnemyController : PlayerController
 
     public void GetDirPointToEnemy()
     {
-        if (isDead)
+        if (!gameObject.activeInHierarchy)
         {
-            Destroy(pointToEnemy);
+            pointToEnemy.gameObject.SetActive(false);
+            secondLevelDisplay.SetActive(false);
             return;
         }
         else if (player && pointToEnemy)

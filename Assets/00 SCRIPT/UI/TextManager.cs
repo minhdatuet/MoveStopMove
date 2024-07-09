@@ -6,12 +6,16 @@ using UnityEngine.UI;
 public class TextManager : Singleton<TextManager>
 {
     [SerializeField] Text aliveText;
-    GameObject enemyList;
     int aliveEnemy;
+    public int AliveEnemy
+    {
+        get { return aliveEnemy; }
+        set { aliveEnemy = value; }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        aliveEnemy = 50;
+        aliveEnemy = 20;
         aliveText.text = "ALIVE: " + aliveEnemy.ToString();
     }
 

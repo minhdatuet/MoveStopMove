@@ -35,7 +35,7 @@ public class ObjectPooling : Singleton<ObjectPooling>
         }
 
         // Nếu không tìm thấy đối tượng nào không hoạt động, khởi tạo một đối tượng mới
-        GameObject g = Instantiate(defaultPrefab, this.transform.position, Quaternion.identity, parentObject.transform);
+        GameObject g = Instantiate(defaultPrefab, new Vector3(0, 0, 0), Quaternion.identity, parentObject.transform);
         _listObjects[defaultPrefab].Add(g); // Thêm đối tượng mới vào danh sách
         g.SetActive(false); // Đặt đối tượng mới là không hoạt động
 

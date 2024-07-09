@@ -156,7 +156,9 @@ public class PlayerController : MonoBehaviour
     private IEnumerator WaitToDestroy()
     {
         yield return new WaitForSeconds(1.0f);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        nameDisplay.gameObject.SetActive(false);
+        levelDisplay.gameObject.SetActive(false);   
     }
 
     private IEnumerator WaitAndAttack()
@@ -278,7 +280,11 @@ public class PlayerController : MonoBehaviour
             levelDisplay.SetLevel(level);
             levelDisplay.offset *= scaleRate;
         }
-        nameDisplay.offset *= scaleRate;
+        if (nameDisplay)
+        {
+            nameDisplay.offset *= scaleRate;
+        }
+        
 
         currScale *= scaleRate;
         this.transform.localScale *= scaleRate;
