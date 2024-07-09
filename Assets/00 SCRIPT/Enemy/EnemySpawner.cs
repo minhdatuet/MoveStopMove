@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using ColorMaterial = CONSTANT.Color;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab; // Prefab của enemy
@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Transform player;
     PlayerController playerController;
     [SerializeField] GameObject enemyList;
-    [SerializeField] Material[] enemyMaterials;
     string[] nameList = new string[10]
         {
             "Goblin",
@@ -58,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
                     newEnemy.gameObject.SetActive(true);
                 }
 
-                Material material = enemyMaterials[i];
+                Material material = ColorController.Instance.GetColor(i);
 
                 // Gán material cho enemy
                 Renderer enemyRenderer = newEnemy.transform.GetChild(1).GetComponent<Renderer>();

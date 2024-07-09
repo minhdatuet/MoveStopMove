@@ -120,6 +120,7 @@ public class PlayerController : MonoBehaviour
                         if (weapon.transform.GetChild(j).gameObject.name.Equals(weaponInHand.transform.GetChild(i).gameObject.name))
                         {
                             weapon.transform.GetChild(j).gameObject.SetActive(true);
+                            weapon.transform.GetChild(j).GetComponent<Renderer>().material = weaponInHand.transform.GetChild(i).GetComponent<Renderer>().material;
                         }
                         else
                         {

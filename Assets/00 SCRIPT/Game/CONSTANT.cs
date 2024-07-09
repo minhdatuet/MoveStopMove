@@ -29,4 +29,17 @@ public static class CONSTANT
         Enemy,
         Weapon
     }
+    public enum Color
+    {
+        Black,
+        Blue,
+        Gray,
+        Green,
+        Maroon,
+        Navy,
+        Pink,
+        Red,
+        Teal,
+        Yellow
+    }
 }

@@ -15,7 +15,7 @@ public class TextManager : Singleton<TextManager>
     // Start is called before the first frame update
     void Start()
     {
-        aliveEnemy = 20;
+        aliveEnemy = 50;
         aliveText.text = "ALIVE: " + aliveEnemy.ToString();
     }
 
