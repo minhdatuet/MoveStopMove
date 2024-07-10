@@ -26,6 +26,11 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         playerController = player.GetComponent<PlayerController>();
+        
+    }
+
+    private void OnEnable()
+    {
         SpawnEnemies();
     }
 
