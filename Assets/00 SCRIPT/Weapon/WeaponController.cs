@@ -69,7 +69,6 @@ public class WeaponController : MonoBehaviour
         
         if (collision.gameObject.layer == (int)CONSTANT.Layer.Enemy)
         {
-            Debug.Log(collision.gameObject.name);
             if (attacker != null)
             {
                 
@@ -77,10 +76,16 @@ public class WeaponController : MonoBehaviour
             }
             
             
-            if (!collision.gameObject.tag.Equals("Player"))
-            {
-                TextManager.Instance.UpdateAliveEnemy();
+            //if (!collision.gameObject.tag.Equals("Player"))
+            //{
+                InGameUIManager.Instance.UpdateAliveEnemy();
                 collision.gameObject.GetComponent<PlayerController>().IsDead = true;
+            //}
+            if (collision.gameObject.tag.Equals("Player"))
+            {
+                GameManager.Instance.EndGame();
+                EndGameUIManager.Instance.SetKillerName(attacker.gameObject.GetComponent<PlayerController>().NameDisplay.GetName());
+                EndGameUIManager.Instance.SetRank(InGameUIManager.Instance.AliveEnemy);
             }
         }
         if (attacker && attacker.tag.Equals("Player"))

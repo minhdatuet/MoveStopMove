@@ -33,4 +33,9 @@ public class NameDisplay : MonoBehaviour
     {
         if (nameText) nameText.text = name;
     }
+
+    public string GetName()
+    {
+        return nameText.text;
+    }
 }

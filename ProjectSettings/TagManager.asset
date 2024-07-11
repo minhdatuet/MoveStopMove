@@ -44,3 +44,6 @@ TagManager:
   - name: InGameCanvas
     uniqueID: 3527262931
     locked: 0
+  - name: EndGameCanvas
+    uniqueID: 3877043333
+    locked: 0

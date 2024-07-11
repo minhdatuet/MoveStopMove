@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextManager : Singleton<TextManager>
+public class InGameUIManager : Singleton<InGameUIManager>
 {
     [SerializeField] Text aliveText;
     int aliveEnemy;

@@ -148,7 +148,7 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnAdditionalEnemy()
     {
-        if (CountEnemiesInMap() < 10 && TextManager.Instance.AliveEnemy > 10)
+        if (CountEnemiesInMap() < 10 && InGameUIManager.Instance.AliveEnemy > 10)
         {
             SpawnEnemy();
         }
