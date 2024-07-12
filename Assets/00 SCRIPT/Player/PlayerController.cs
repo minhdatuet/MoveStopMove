@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
-        SetWeaponInHand();
+        //SetWeaponInHand();
         DisplayLevelAndName();
     }
 

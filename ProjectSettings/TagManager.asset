@@ -47,3 +47,6 @@ TagManager:
   - name: EndGameCanvas
     uniqueID: 3877043333
     locked: 0
+  - name: MenuCanvas
+    uniqueID: 2165149059
+    locked: 0

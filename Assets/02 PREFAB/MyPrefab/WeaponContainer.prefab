@@ -32,18 +32,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8080187132152330481}
   - {fileID: 172593677333667238}
-  - {fileID: 8619527865412349065}
-  - {fileID: 4339046720713889356}
-  - {fileID: 9208808868063368917}
-  - {fileID: 6112272079221776253}
-  - {fileID: 2347057073165640336}
-  - {fileID: 3687842175546929909}
   - {fileID: 4685998010414591329}
   - {fileID: 7784317951979068501}
-  - {fileID: 4950067793040839799}
+  - {fileID: 2347057073165640336}
+  - {fileID: 6112272079221776253}
+  - {fileID: 8080187132152330481}
   - {fileID: 3623361523495749706}
+  - {fileID: 3687842175546929909}
+  - {fileID: 9208808868063368917}
+  - {fileID: 8619527865412349065}
+  - {fileID: 4339046720713889356}
+  - {fileID: 4950067793040839799}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3204548693375651432
@@ -242,7 +242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 90389cac50942cb4ca38583e6531094a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 90389cac50942cb4ca38583e6531094a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -309,7 +309,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 47c5647b1ac791e4f94e83afb9095d5b, type: 3}
       propertyPath: m_Name
-      value: Candy_1
+      value: Candy Cane
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 47c5647b1ac791e4f94e83afb9095d5b, type: 3}
       propertyPath: m_IsActive
@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1c040a6e7d23e904b87e93fb9c66a037, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1c040a6e7d23e904b87e93fb9c66a037, type: 3}
       propertyPath: m_LocalPosition.y
@@ -587,7 +587,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: f45aa9b66c9c81a4cac7e66fe618e58f, type: 3}
       propertyPath: m_Name
-      value: Candy_2
+      value: Ice-cream Cone
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: f45aa9b66c9c81a4cac7e66fe618e58f, type: 3}
       propertyPath: m_IsActive
@@ -678,7 +678,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 77de8014aff37804f92ab58c8817cced, type: 3}
       propertyPath: m_Name
-      value: Candy_3
+      value: Lollipop
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 77de8014aff37804f92ab58c8817cced, type: 3}
       propertyPath: m_IsActive
@@ -939,7 +939,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 37a28123e5e39f44fbff5daa106af161, type: 3}
       propertyPath: m_Name
-      value: Candy
+      value: Swirly Pop
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 37a28123e5e39f44fbff5daa106af161, type: 3}
       propertyPath: m_IsActive
@@ -1139,7 +1139,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
       propertyPath: m_Name
-      value: Axe_1
+      value: Battle Axe
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
       propertyPath: m_IsActive
