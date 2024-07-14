@@ -64,6 +64,16 @@ public class WeaponController : MonoBehaviour
                             OnceAttack();
                             break;
                         }
+                    case "Boomerang":
+                    case "Z":
+                        {
+                            DoubleAttack();
+                            if (gameObject.activeInHierarchy)
+                            {
+                                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+                            }
+                            break;
+                        }
                     default:
                         {
                             OnceAttack();
@@ -102,11 +112,14 @@ public class WeaponController : MonoBehaviour
     IEnumerator DoubleAttackCoroutine()
     {
         isReturning = true;
+        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         Vector3 targetPos = attacker.transform.position;
-
+        Debug.Log("RETURNING");
         while (Vector3.Distance(transform.position, targetPos) > 0.1f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * rotationSpeed);
+            targetPos = attacker.transform.position;
+            Debug.Log(targetPos);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 5.0f);
             yield return null;
         }
 
@@ -120,7 +133,7 @@ public class WeaponController : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         
-        if (collision.gameObject.layer == (int)CONSTANT.Layer.Enemy)
+        if (collision.gameObject.layer == (int)CONSTANT.Layer.Enemy && attacker.gameObject != collision.gameObject)
         {
             if (attacker != null)
             {
