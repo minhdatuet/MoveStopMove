@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
@@ -71,7 +72,6 @@ public class PlayerController : MonoBehaviour
         radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
-        //SetWeaponInHand();
         DisplayLevelAndName();
     }
 
@@ -86,25 +86,6 @@ public class PlayerController : MonoBehaviour
         }
         CheckState();
         _anim.UpdateAnimation(_state);
-    }
-
-    public virtual void SetWeaponInHand()
-    {
-        //if (weaponInHand)
-        //{
-            //int randomWeapon = Random.Range(0, weaponInHand.transform.childCount - 1);
-            for (int j = 0; j < weaponInHand.transform.childCount; j++)
-            {
-                if (j == 3)
-                {
-                    weaponInHand.transform.GetChild(j).gameObject.SetActive(true);
-                }
-                else
-                {
-                    weaponInHand.transform.GetChild(j).gameObject.SetActive(false);
-                }
-            }
-        //}
     }
 
     public void SetWeapon()
@@ -154,14 +135,6 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
-    private IEnumerator WaitToDestroy()
-    {
-        yield return new WaitForSeconds(1.0f);
-        gameObject.SetActive(false);
-        nameDisplay.gameObject.SetActive(false);
-        levelDisplay.gameObject.SetActive(false);   
-    }
-
     private IEnumerator WaitAndAttack()
     { 
         if (canAttack)
@@ -191,7 +164,8 @@ public class PlayerController : MonoBehaviour
         {
             targetEnemy.GetChild(4).gameObject.SetActive(false);
         }
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack, enemyLayer);
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack - 0.5f * currScale, enemyLayer);
         if (hitColliders.Length > 1)
         {
             // Tìm enemy gần nhất
@@ -216,7 +190,7 @@ public class PlayerController : MonoBehaviour
     }
     public void CheckForEnemiesAndAttack()
     {
-        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack) 
+        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack - 0.5f * currScale) 
         {
             _anim.attacking = true;
             _state = PlayerState.ATTACK;
@@ -247,9 +221,18 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
         {
+            
             //this.GetComponent<Collider>().enabled = false;
             StartCoroutine(WaitToDestroy());
         }
+    }
+
+    private IEnumerator WaitToDestroy()
+    {
+        yield return new WaitForSeconds(1.0f);
+        gameObject.SetActive(false);
+        nameDisplay.gameObject.SetActive(false);
+        levelDisplay.gameObject.SetActive(false);
     }
 
     public void PoolingWeapon()
@@ -285,7 +268,6 @@ public class PlayerController : MonoBehaviour
         {
             nameDisplay.offset *= scaleRate;
         }
-        
 
         currScale *= scaleRate;
         this.transform.localScale *= scaleRate;

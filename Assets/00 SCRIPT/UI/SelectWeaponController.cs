@@ -8,12 +8,14 @@ public class SelectWeaponController : MonoBehaviour
 {
     [SerializeField] Text weaponNameText;
     [SerializeField] Text weaponFeatureText;
+    [SerializeField] Text selectText;
     [SerializeField] List<GameObject> weapons = new List<GameObject>();
     [SerializeField] GameObject weaponInHand;
 
     // Start is called before the first frame update
     void Start()
     {
+        SetSelectedText(0);
         if (weapons.Count != 0)
         {
             int len = weapons.Count;
@@ -26,6 +28,27 @@ public class SelectWeaponController : MonoBehaviour
                 }
             }
         }
+    }
+
+    void SetSelectedText(int weaponIndex)
+    {
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            if (weaponInHand.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                if (weaponIndex == i)
+                {
+                    Debug.Log("WEAPON" + i);
+                    selectText.text = "Equipped";
+                }
+                else
+                {
+                    selectText.text = "Select";
+                }
+            }
+            
+        }
+        
     }
 
     public void SetWeaponFeature(int weaponIndex)
@@ -83,6 +106,7 @@ public class SelectWeaponController : MonoBehaviour
                 {
                     weaponNameText.text = weapons[i-1].name.ToUpper();
                     SetWeaponFeature(i-1);
+                    SetSelectedText(i - 1);
                     weapons[i].SetActive(false);
                     weapons[i-1].SetActive(true);
                 }
@@ -103,6 +127,7 @@ public class SelectWeaponController : MonoBehaviour
                 {
                     weaponNameText.text = weapons[i + 1].name.ToUpper();
                     SetWeaponFeature(i + 1);
+                    SetSelectedText(i + 1);
                     weapons[i].SetActive(false);
                     weapons[i + 1].SetActive(true);
                 }
@@ -120,6 +145,7 @@ public class SelectWeaponController : MonoBehaviour
             if (weapons[i].activeInHierarchy)
             {
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(true);
+                SetSelectedText(i);
 
             } else
             {

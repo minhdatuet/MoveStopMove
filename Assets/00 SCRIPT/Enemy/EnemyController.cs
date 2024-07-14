@@ -38,6 +38,7 @@ public class EnemyController : PlayerController
         SetWeaponInHand();
         DisplayLevelAndName();
         SpawnPointToEnemy();
+        StartCoroutine(SetParticleSystemColor());
         StartCoroutine(MoveRoutine());
     }
 
@@ -64,6 +65,7 @@ public class EnemyController : PlayerController
         if (pointToEnemy) pointToEnemy.gameObject.SetActive(true);
         if (secondLevelDisplay) secondLevelDisplay.gameObject.SetActive(true);
         radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
+        gameObject.GetComponentInChildren<ParticleSystemController>().SetParticleSystemColor(bodyColor);
         StartCoroutine(MoveRoutine());
     }
 
@@ -86,6 +88,12 @@ public class EnemyController : PlayerController
         currScale = 1.0f;
         canAttack = false;
         
+    }
+
+    IEnumerator SetParticleSystemColor()
+    {
+        yield return null;
+        gameObject.GetComponentInChildren<ParticleSystemController>().SetParticleSystemColor(bodyColor);
     }
     // Tạo mũi tên chỉ đến enemy
     public void SpawnPointToEnemy()
@@ -176,7 +184,7 @@ public class EnemyController : PlayerController
     }
 
 
-    public override void SetWeaponInHand()
+    public void SetWeaponInHand()
     {
         if (weaponInHand)
         {

@@ -10,6 +10,7 @@ public class WeaponController : MonoBehaviour
     float radiusAttack;
     [SerializeField] GameObject attacker;
     [SerializeField] float rotationSpeed = 720f;
+    bool isReturning = false;
     public GameObject Attacker
     {  
         get { return attacker; }  
@@ -49,12 +50,38 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.activeInHierarchy)
+        for (int i = 0; i < gameObject.transform.childCount; i++)
         {
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+            if (gameObject.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                GameObject weaponEnabling = gameObject.transform.GetChild(i).gameObject;
+                switch (weaponEnabling.name)
+                {
+                    case "Knife":
+                    case "Ice-cream Cone":
+                    case "Arrow":
+                        {
+                            OnceAttack();
+                            break;
+                        }
+                    default:
+                        {
+                            OnceAttack();
+                            if (gameObject.activeInHierarchy)
+                            {
+                                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+                            }
+                            break;
+                        }
+                }
+            }
         }
+        
+    }
 
-        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.4f * attacker.GetComponent<PlayerController>().CurrScale)
+    void OnceAttack()
+    {
+        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
         {
             if (attacker.tag.Equals("Player"))
             {
@@ -64,6 +91,32 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    void DoubleAttack()
+    {
+        if (!isReturning && attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
+        {
+            StartCoroutine(DoubleAttackCoroutine());
+        }
+    }
+
+    IEnumerator DoubleAttackCoroutine()
+    {
+        isReturning = true;
+        Vector3 targetPos = attacker.transform.position;
+
+        while (Vector3.Distance(transform.position, targetPos) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * rotationSpeed);
+            yield return null;
+        }
+
+        if (attacker.tag.Equals("Player"))
+        {
+            attacker.GetComponent<PlayerController>().HittedTarget();
+        }
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
         
@@ -71,7 +124,7 @@ public class WeaponController : MonoBehaviour
         {
             if (attacker != null)
             {
-                
+                attacker.gameObject.GetComponentInChildren<ParticleSystemController>().StartLevelUpParticle();
                 attacker.GetComponent<PlayerController>().ScaleCharacter();
             }
             
@@ -79,6 +132,7 @@ public class WeaponController : MonoBehaviour
             //if (!collision.gameObject.tag.Equals("Player"))
             //{
                 InGameUIManager.Instance.UpdateAliveEnemy();
+                collision.gameObject.GetComponentInChildren<ParticleSystemController>().StartDeathParticle();
                 collision.gameObject.GetComponent<PlayerController>().IsDead = true;
             //}
             if (collision.gameObject.tag.Equals("Player"))
