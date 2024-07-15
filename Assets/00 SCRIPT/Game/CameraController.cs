@@ -17,7 +17,7 @@ public class CameraController : Singleton<CameraController>
         CONSTANT.SCREEN_WIDTH = CONSTANT.SCREEN_HEIGHT * aspect;
 
         CONSTANT.ANGLE_SPLIT_SCREEN = Mathf.Atan2(CONSTANT.SCREEN_HEIGHT, CONSTANT.SCREEN_WIDTH) * Mathf.Rad2Deg;
-        offset = transform.position;
+        
     }
 
     void LateUpdate()

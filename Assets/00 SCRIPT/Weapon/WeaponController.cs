@@ -10,7 +10,6 @@ public class WeaponController : MonoBehaviour
     float radiusAttack;
     [SerializeField] GameObject attacker;
     [SerializeField] float rotationSpeed = 720f;
-    bool isReturning = false;
     public GameObject Attacker
     {  
         get { return attacker; }  
@@ -95,6 +94,7 @@ public class WeaponController : MonoBehaviour
         {
             if (attacker.tag.Equals("Player"))
             {
+                Debug.Log(radiusAttack);
                 attacker.GetComponent<PlayerController>().HittedTarget();
             }
             gameObject.SetActive(false);
@@ -103,7 +103,7 @@ public class WeaponController : MonoBehaviour
 
     void DoubleAttack()
     {
-        if (!isReturning && attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
+        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
         {
             StartCoroutine(DoubleAttackCoroutine());
         }
@@ -111,7 +111,6 @@ public class WeaponController : MonoBehaviour
 
     IEnumerator DoubleAttackCoroutine()
     {
-        isReturning = true;
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         Vector3 targetPos = attacker.transform.position;
         Debug.Log("RETURNING");

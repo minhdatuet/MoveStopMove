@@ -13,7 +13,7 @@ public class NameDisplay : MonoBehaviour
     void Start()
     {
         // Tìm Text bên trong đối tượng
-        nameText = GetComponentInChildren<Text>();
+        nameText = GetComponent<Text>();
     }
 
     void Update()
@@ -31,7 +31,8 @@ public class NameDisplay : MonoBehaviour
 
     public void SetName(string name)
     {
-        if (nameText) nameText.text = name;
+        nameText = GetComponent<Text>();
+        nameText.text = name;
     }
 
     public string GetName()

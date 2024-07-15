@@ -65,6 +65,12 @@ public class PlayerController : MonoBehaviour
         get { return isDead; }
         set { isDead = value; }
     }
+    bool isChangingSkin = false;
+    public bool IsChangingSkin
+    {
+        get { return isChangingSkin; }
+        set { isChangingSkin = value; }
+    }
     protected LayerMask enemyLayer;
 
     void Start()
@@ -290,7 +296,10 @@ public class PlayerController : MonoBehaviour
             _state = PlayerState.RUN;
             canAttack = true;
         }
-        else
+        else if (isChangingSkin)
+        {
+            _state = PlayerState.DANCE_CHAR_SKIN;
+        } else
         {
             _state = PlayerState.IDLE;
         }
@@ -312,7 +321,9 @@ public class PlayerController : MonoBehaviour
         nameDisplay.target = this.transform;
         nameDisplay.offset = new Vector3(0, 1.4f, 0);
         nameDisplay.transform.localRotation = Quaternion.identity;
-        nameDisplay.SetName("You");
+        Debug.Log(PlayerPrefs.GetString("PlayerName"));
+
         nameDisplay.GetComponent<Text>().color = bodyColor.color;
+        nameDisplay.SetName(PlayerPrefs.GetString("PlayerName"));
     }
 }

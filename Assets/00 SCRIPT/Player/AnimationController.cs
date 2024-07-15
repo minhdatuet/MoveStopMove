@@ -19,7 +19,8 @@ public class AnimationController : MonoBehaviour
         {
             case PlayerState.IDLE:
                 {
-                    _animator.SetBool("IsIdle", true); 
+                    _animator.SetBool("IsIdle", true);
+                    _animator.SetBool("IsDance", false);
                     if (!attacking) _animator.SetBool("IsAttack", false); break;
                 }
             case PlayerState.RUN:
@@ -34,6 +35,10 @@ public class AnimationController : MonoBehaviour
             case PlayerState.DEATH:
                 {
                     _animator.SetBool("IsDead", true); break;
+                }
+            case PlayerState.DANCE_CHAR_SKIN:
+                {
+                    _animator.SetBool("IsDance", true); break;
                 }
 
         }

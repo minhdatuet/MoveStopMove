@@ -16,7 +16,10 @@ public static class CONSTANT
         IDLE,
         RUN,
         ATTACK,
-        DEATH
+        DEATH,
+        DANCE_WIN,
+        DANCE_CHAR_SKIN,
+        ULTI
     }
     public enum Layer
     {
