@@ -105,7 +105,7 @@ public class EnemyController : PlayerController
             secondLevelDisplay = Instantiate(levelDisplayPrefab, transform.position, Quaternion.identity, levelDisplayList.transform);
             secondLevelDisplay.GetComponent<LevelDisplay>().target = this.pointToEnemy.transform;
             secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.35f, 0) * playerController.CurrScale;
-            secondLevelDisplay.transform.localScale = Vector3.one * 0.05f;
+            secondLevelDisplay.transform.localScale = Vector3.one * 0.3f;
             secondLevelDisplay.transform.localRotation = Quaternion.identity;
             secondLevelDisplay.transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
         }
@@ -244,6 +244,8 @@ public class EnemyController : PlayerController
 
     }
 
+
+
     public void GetDirPointToEnemy()
     {
         if (!gameObject.activeInHierarchy)
@@ -260,32 +262,43 @@ public class EnemyController : PlayerController
             pointToEnemy.transform.localEulerAngles = new Vector3(0, 0, -angle);
             secondLevelDisplay.GetComponent<LevelDisplay>().SetLevel(level);
 
-            Vector3 posInScreen;
-            Vector3 playerBottomPos = player.transform.position + new Vector3(0, 20, 0);
-            // Kiểm tra góc và đặt vị trí của pointToEnemy vào một trong bốn góc của màn hình
+            Vector3 newPos = Vector3.zero;
+
+            // Đặt vị trí trực tiếp dựa trên góc tính toán
             if (CONSTANT.ANGLE_SPLIT_SCREEN - 90 < angle && angle <= 90 - CONSTANT.ANGLE_SPLIT_SCREEN)
             {
-                posInScreen = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(Mathf.Deg2Rad * angle), Screen.height - 30f, Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.2f - 0.01f * playerController.CurrScale, 0);
+                newPos = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(Mathf.Deg2Rad * angle), Screen.height, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.2f - 0.05f * playerController.CurrScale, 0);
             }
             else if (angle > 90 - CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 90 + CONSTANT.ANGLE_SPLIT_SCREEN)
             {
-                posInScreen = new Vector3(Screen.width - 25f, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 - angle)), Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(- 0.01f - 0.013f * playerController.CurrScale, -0.2f, 0);
+                newPos = new Vector3(Screen.width, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 - angle)), 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(-0.03f - 0.07f * playerController.CurrScale, -0.2f, 0);
             }
             else if ((angle > 90 + CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 180) || (angle <= -CONSTANT.ANGLE_SPLIT_SCREEN - 90 && angle >= -180))
             {
-                posInScreen = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(-Mathf.Deg2Rad * angle), 15f, Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.19f + 0.015f * playerController.CurrScale, 0);
+                newPos = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(-Mathf.Deg2Rad * angle), 0, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.1f + 0.12f * playerController.CurrScale, 0);
             }
             else
             {
-                posInScreen = new Vector3(25f, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 + angle)), Camera.main.WorldToScreenPoint(playerBottomPos).z);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.01f + 0.013f * playerController.CurrScale, -0.2f, 0);
+                newPos = new Vector3(0, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 + angle)), 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.03f + 0.07f * playerController.CurrScale, -0.2f, 0);
             }
+            
+            newPos.x -= Screen.width / 2;
+            newPos.y -= Screen.height / 2;
+            // Sử dụng Mathf.Clamp để đảm bảo vị trí không vượt ra ngoài màn hình
+            newPos.x = Mathf.Clamp(newPos.x, -Screen.width / 2 + 15f, Screen.width / 2 - 15f);
+            newPos.y = Mathf.Clamp(newPos.y, -Screen.height / 2 + 15f, Screen.height / 2 - 15f);
 
-            // Đặt vị trí của pointToEnemy theo vị trí trên màn hình đã chuyển đổi sang thế giới
-            pointToEnemy.transform.position = Camera.main.ScreenToWorldPoint(posInScreen);
+            pointToEnemy.transform.localPosition = newPos;
+
+
+            Debug.Log(newPos);
         }
     }
+
+
+
 }

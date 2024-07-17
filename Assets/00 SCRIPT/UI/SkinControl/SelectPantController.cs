@@ -21,6 +21,11 @@ public class SelectPantController : SelectSkinController
         SetBeginSkin();
     }
 
+    private void OnDisable()
+    {
+        BackToSelectedSkin();
+    }
+
     protected override void SetBeginSkin()
     {
         base.SetBeginSkin();

@@ -20,4 +20,9 @@ public class SelectShieldController : SelectHairController
     {
         SetBeginSkin();
     }
+
+    private void OnDisable()
+    {
+        BackToSelectedSkin();
+    }
 }

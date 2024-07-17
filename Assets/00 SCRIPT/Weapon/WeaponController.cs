@@ -60,6 +60,7 @@ public class WeaponController : MonoBehaviour
                     case "Ice-cream Cone":
                     case "Arrow":
                         {
+                            RotateTowardsAttacker();
                             OnceAttack();
                             break;
                         }
@@ -88,6 +89,15 @@ public class WeaponController : MonoBehaviour
         
     }
 
+    void RotateTowardsAttacker()
+    {
+        if (attacker != null)
+        {
+            Vector3 directionToFace = attacker.transform.forward;
+            Quaternion targetRotation = Quaternion.LookRotation(directionToFace);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+    }
     void OnceAttack()
     {
         if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)

@@ -22,6 +22,11 @@ public class SelectHairController : SelectSkinController
         SetBeginSkin();
     }
 
+    private void OnDisable()
+    {
+        BackToSelectedSkin();
+    }
+
     protected override void SetBeginSkin()
     {
         base.SetBeginSkin();
