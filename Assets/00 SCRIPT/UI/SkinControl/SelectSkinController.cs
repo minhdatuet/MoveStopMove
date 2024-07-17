@@ -52,7 +52,6 @@ public abstract class SelectSkinController : MonoBehaviour
 
     protected virtual void TrySkin(Button clickedButton)
     {
-        Debug.Log("CLICKED" + clickedButton.gameObject.name);
         for (int i = 0; i < skinButtonList.Count; i++)
         {
             Button currentButton = skinButtonList[i];

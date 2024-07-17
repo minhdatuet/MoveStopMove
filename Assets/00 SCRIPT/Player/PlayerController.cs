@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
                         if (weapon.transform.GetChild(j).gameObject.name.Equals(weaponInHand.transform.GetChild(i).gameObject.name))
                         {
                             weapon.transform.GetChild(j).gameObject.SetActive(true);
-                            weapon.transform.GetChild(j).GetComponent<Renderer>().material = weaponInHand.transform.GetChild(i).GetComponent<Renderer>().material;
+                            weapon.transform.GetChild(j).GetComponent<Renderer>().materials = weaponInHand.transform.GetChild(i).GetComponent<Renderer>().materials;
                         }
                         else
                         {
@@ -235,10 +235,24 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator WaitToDestroy()
     {
+        if (gameObject.CompareTag("Player"))
+        {
+            _joystick.SetHorizontal(0);
+            _joystick.SetVertical(0);
+        }
         yield return new WaitForSeconds(1.0f);
         gameObject.SetActive(false);
         nameDisplay.gameObject.SetActive(false);
         levelDisplay.gameObject.SetActive(false);
+
+    }
+
+    public void RevivePlayer()
+    {
+        isDead = false;
+        gameObject.SetActive(true);
+        nameDisplay.gameObject.SetActive(true);
+        levelDisplay.gameObject.SetActive(true);
     }
 
     public void PoolingWeapon()

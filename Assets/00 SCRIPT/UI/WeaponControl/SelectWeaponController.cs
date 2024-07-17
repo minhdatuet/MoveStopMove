@@ -11,6 +11,7 @@ public class SelectWeaponController : MonoBehaviour
     [SerializeField] Text selectText;
     [SerializeField] List<GameObject> weapons = new List<GameObject>();
     [SerializeField] GameObject weaponInHand;
+    [SerializeField] GameObject weaponColorContainer;
 
     // Start is called before the first frame update
     void Start()
@@ -109,6 +110,33 @@ public class SelectWeaponController : MonoBehaviour
                     SetSelectedText(i - 1);
                     weapons[i].SetActive(false);
                     weapons[i-1].SetActive(true);
+                    for (int j = 0; j < weaponColorContainer.transform.childCount; j++)
+                    {
+                        GameObject currColor = weaponColorContainer.transform.GetChild(j).gameObject;
+                        for (int k = 0; k < currColor.transform.GetChild(0).transform.childCount; k++)
+                        {
+                            if (k > 0)
+                            {
+                                GameObject currWeaponColor = currColor.transform.GetChild(0).transform.GetChild(k).gameObject;
+                                if (currWeaponColor.activeInHierarchy)
+                                {
+                                    currWeaponColor.SetActive(false);
+                                    currColor.transform.GetChild(0).transform.GetChild(k - 1).transform.gameObject.SetActive(true);
+                                    break;
+                                }
+
+                            }
+                        }
+                        if (j == 0)
+                        {
+                            currColor.GetComponent<Outline>().enabled = true;
+                            weapons[i - 1].GetComponent<Renderer>().materials = currColor.transform.GetChild(0).transform.GetChild(i - 1).transform.gameObject.GetComponent<Renderer>().materials;
+                        }
+                        else
+                        {
+                            currColor.GetComponent<Outline>().enabled = false;
+                        }
+                    }
                 }
                 break;
 
@@ -130,6 +158,33 @@ public class SelectWeaponController : MonoBehaviour
                     SetSelectedText(i + 1);
                     weapons[i].SetActive(false);
                     weapons[i + 1].SetActive(true);
+                    for (int j = 0; j < weaponColorContainer.transform.childCount; j++)
+                    {
+                        GameObject currColor = weaponColorContainer.transform.GetChild(j).gameObject;
+                        for (int k = 0; k < currColor.transform.GetChild(0).transform.childCount; k++)
+                        {
+                            if (k < len - 1)
+                            {
+                                GameObject currWeaponColor = currColor.transform.GetChild(0).transform.GetChild(k).gameObject;
+                                if (currWeaponColor.activeInHierarchy)
+                                {
+                                    currWeaponColor.SetActive(false);
+                                    currColor.transform.GetChild(0).transform.GetChild(k + 1).transform.gameObject.SetActive(true);
+                                    break;
+                                }
+
+                            }
+                        }
+                        if (j == 0)
+                        {
+                            currColor.GetComponent<Outline>().enabled = true;
+                            weapons[i + 1].GetComponent<Renderer>().materials = currColor.transform.GetChild(0).transform.GetChild(i + 1).transform.gameObject.GetComponent<Renderer>().materials;
+                        }
+                        else
+                        {
+                            currColor.GetComponent<Outline>().enabled = false;
+                        }
+                    }
                 }
                 break;
 
@@ -145,6 +200,7 @@ public class SelectWeaponController : MonoBehaviour
             if (weapons[i].activeInHierarchy)
             {
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(true);
+                weaponInHand.transform.GetChild(i).gameObject.GetComponent<Renderer>().materials = weapons[i].GetComponent<Renderer>().materials;
                 SetSelectedText(i);
 
             } else

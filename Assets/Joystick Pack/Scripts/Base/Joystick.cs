@@ -9,6 +9,17 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     public float Vertical { get { return (snapY) ? SnapFloat(input.y, AxisOptions.Vertical) : input.y; } }
     public Vector2 Direction { get { return new Vector2(Horizontal, Vertical); } }
 
+    // Thêm các hàm setter cho Horizontal và Vertical
+    public void SetHorizontal(float value)
+    {
+        input.x = value;
+    }
+
+    public void SetVertical(float value)
+    {
+        input.y = value;
+    }
+
     public float HandleRange
     {
         get { return handleRange; }

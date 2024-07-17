@@ -6,26 +6,31 @@ public class WeaponController : MonoBehaviour
 {
     Vector3 initPos = Vector3.zero;
     Vector3 sourceScale;
-    // Start is called before the first frame update
     float radiusAttack;
+    bool hasRotatedTowardsAttacker = false;
+
     [SerializeField] GameObject attacker;
     [SerializeField] float rotationSpeed = 720f;
+
     public GameObject Attacker
-    {  
-        get { return attacker; }  
+    {
+        get { return attacker; }
         set { attacker = value; }
     }
+
     private void Awake()
     {
         sourceScale = transform.localScale;
     }
+
     void Start()
     {
-        
     }
+
     void OnEnable()
     {
         initPos = transform.position;
+        hasRotatedTowardsAttacker = false; 
 
         if (attacker != null)
         {
@@ -44,9 +49,8 @@ public class WeaponController : MonoBehaviour
     {
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         transform.localScale = sourceScale;
-  
     }
-    // Update is called once per frame
+
     void Update()
     {
         for (int i = 0; i < gameObject.transform.childCount; i++)
@@ -60,7 +64,11 @@ public class WeaponController : MonoBehaviour
                     case "Ice-cream Cone":
                     case "Arrow":
                         {
-                            RotateTowardsAttacker();
+                            if (!hasRotatedTowardsAttacker) 
+                            {
+                                RotateTowardsAttacker();
+                                hasRotatedTowardsAttacker = true;
+                            }
                             OnceAttack();
                             break;
                         }
@@ -86,7 +94,6 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
-        
     }
 
     void RotateTowardsAttacker()
@@ -98,6 +105,7 @@ public class WeaponController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
+
     void OnceAttack()
     {
         if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
@@ -141,7 +149,6 @@ public class WeaponController : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        
         if (collision.gameObject.layer == (int)CONSTANT.Layer.Enemy && attacker.gameObject != collision.gameObject)
         {
             if (attacker != null)
@@ -149,17 +156,21 @@ public class WeaponController : MonoBehaviour
                 attacker.gameObject.GetComponentInChildren<ParticleSystemController>().StartLevelUpParticle();
                 attacker.GetComponent<PlayerController>().ScaleCharacter();
             }
-            
-            
-            //if (!collision.gameObject.tag.Equals("Player"))
-            //{
-                InGameUIManager.Instance.UpdateAliveEnemy();
-                collision.gameObject.GetComponentInChildren<ParticleSystemController>().StartDeathParticle();
-                collision.gameObject.GetComponent<PlayerController>().IsDead = true;
-            //}
+
+            InGameUIManager.Instance.UpdateAliveEnemy();
+            collision.gameObject.GetComponentInChildren<ParticleSystemController>().StartDeathParticle();
+            collision.gameObject.GetComponent<PlayerController>().IsDead = true;
+
             if (collision.gameObject.tag.Equals("Player"))
             {
-                GameManager.Instance.EndGame();
+                if (GameManager.Instance.IsRevive)
+                {
+                    GameManager.Instance.ReviveGame();
+                }
+                else
+                {
+                    GameManager.Instance.EndGame();
+                }
                 EndGameUIManager.Instance.SetKillerName(attacker.gameObject.GetComponent<PlayerController>().NameDisplay.GetName());
                 EndGameUIManager.Instance.SetRank(InGameUIManager.Instance.AliveEnemy);
             }

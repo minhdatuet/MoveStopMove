@@ -7,6 +7,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] Canvas menuCanvas;
     [SerializeField] Canvas inGameCanvas;
     [SerializeField] Canvas endGameCanvas;
+
+    private bool isRevive = true;
+    public bool IsRevive
+    {
+        get { return isRevive; }
+        set { isRevive = value; }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +25,12 @@ public class GameManager : Singleton<GameManager>
     {
         
     }
-
+    
+    public void ReviveGame()
+    {
+        inGameCanvas.gameObject.SetActive(false);
+        endGameCanvas.gameObject.SetActive(true);
+    }
     public void EndGame()
     {
         inGameCanvas.gameObject.SetActive(false);

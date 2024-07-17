@@ -293,9 +293,6 @@ public class EnemyController : PlayerController
             newPos.y = Mathf.Clamp(newPos.y, -Screen.height / 2 + 15f, Screen.height / 2 - 15f);
 
             pointToEnemy.transform.localPosition = newPos;
-
-
-            Debug.Log(newPos);
         }
     }
 
