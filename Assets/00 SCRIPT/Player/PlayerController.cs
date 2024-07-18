@@ -134,19 +134,19 @@ public class PlayerController : MonoBehaviour
     {
         yield return null;
         GameData data = SaveLoadManager.Instance.LoadData();
-        if (data.player.hair.enable)
+        for (int i = 0; i < data.player.hair.Count; i++)
         {
-            for (int i = 0; i < hairContainer.transform.childCount; i++)
+            if (data.player.hair[i].enable)
             {
-                if (i == data.player.hair.id)
-                {
-                    hairContainer.transform.GetChild(i).gameObject.SetActive(true);
-                } else
-                {
-                    hairContainer.transform.GetChild(i).gameObject.SetActive(false);
-                }
+
+                hairContainer.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                hairContainer.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
+        
         if (data.player.pant.enable)
         {
             GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
@@ -167,18 +167,16 @@ public class PlayerController : MonoBehaviour
             GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
             playerPant.SetActive(false);
         }
-        if (data.player.shield.enable)
+        for (int i = 0; i < data.player.shield.Count; i++)
         {
-            for (int i = 0; i < shieldContainer.transform.childCount; i++)
+            if (data.player.shield[i].enable)
             {
-                if (i == data.player.shield.id)
-                {
-                    shieldContainer.transform.GetChild(i).gameObject.SetActive(true);
-                }
-                else
-                {
-                    shieldContainer.transform.GetChild(i).gameObject.SetActive(false);
-                }
+
+                shieldContainer.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                shieldContainer.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
         for (int i = 0; i < weaponInHand.transform.childCount; i++)

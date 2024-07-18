@@ -27,7 +27,7 @@ public class MenuUIManager : Singleton<MenuUIManager>
         StartCoroutine(SetDataCoroutine());
     }
 
-    IEnumerator SetDataCoroutine()
+    public IEnumerator SetDataCoroutine()
     {
         yield return null;
         GameData data = SaveLoadManager.Instance.LoadData();

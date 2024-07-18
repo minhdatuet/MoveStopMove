@@ -11,16 +11,11 @@ public abstract class SelectSkinController : MonoBehaviour
     [SerializeField] protected GameObject skinContainer;
     protected GameObject selectedSkin;
     protected Button selectedButton;
-    [SerializeField] protected GameObject buttonContainer;
+    [SerializeField] protected GameObject selectButtonContainer;
+    [SerializeField] protected GameObject buyButtonContainer;
     [SerializeField] protected GameData gameData;
+    [SerializeField] GameObject oneTimeText;
 
-    // Pant
-    //[SerializeField] List<Button> pantButtonList = new List<Button>();
-    //[SerializeField] GameObject pantContainer;
-    //GameObject selectedPant;
-    //Button selectedPantButton;
-    //[SerializeField] GameObject pantButtonContainer;
-    
 
 
     // Start is called before the first frame update
@@ -59,26 +54,56 @@ public abstract class SelectSkinController : MonoBehaviour
             if (clickedButton == currentButton)
             {
                 clickedButton.gameObject.GetComponent<Outline>().enabled = true;
+                SetCost(i);
+                if (gameData.player.hair[i].isTrying)
+                {
+
+                    oneTimeText.SetActive(true);
+                }
+                else
+                {
+                    oneTimeText.SetActive(false);
+                }
             }
             else
             {
                 currentButton.gameObject.GetComponent<Outline>().enabled = false;
             }
+            
         }
+        CheckBought(clickedButton);
         CheckEquipped(clickedButton);
+    }
+
+    protected void SetCost(int skinIndex)
+    {
+        buyButtonContainer.transform.GetChild(0).GetComponentInChildren<Text>().text = gameData.player.hair[skinIndex].cost.ToString();
+    }
+    protected void CheckBought(Button clickedButton)
+    {
+        if (!clickedButton.transform.GetChild(2).gameObject.activeInHierarchy)
+        {
+            buyButtonContainer.SetActive(false);
+            selectButtonContainer.SetActive(true);
+        }
+        else
+        {
+            buyButtonContainer.SetActive(true);
+            selectButtonContainer.SetActive(false);
+        }
     }
 
     protected void CheckEquipped(Button clickedButton)
     {
         if (clickedButton.transform.GetChild(1).gameObject.activeInHierarchy)
         {
-            buttonContainer.transform.GetChild(0).gameObject.SetActive(false);
-            buttonContainer.transform.GetChild(1).gameObject.SetActive(true);
+            selectButtonContainer.transform.GetChild(0).gameObject.SetActive(false);
+            selectButtonContainer.transform.GetChild(1).gameObject.SetActive(true);
         }
         else
         {
-            buttonContainer.transform.GetChild(0).gameObject.SetActive(true);
-            buttonContainer.transform.GetChild(1).gameObject.SetActive(false);
+            selectButtonContainer.transform.GetChild(0).gameObject.SetActive(true);
+            selectButtonContainer.transform.GetChild(1).gameObject.SetActive(false);
         } 
     }
 
@@ -87,6 +112,13 @@ public abstract class SelectSkinController : MonoBehaviour
     public abstract void SelectSkin();
 
     public abstract void UnequippedSkin();
+
+    public abstract void BuySkin();
+
+
+    public abstract void TryOneTimeSkin();
+
+    public abstract void CheckSkinLocked();
     
 
     public void ChangeCameraPos()

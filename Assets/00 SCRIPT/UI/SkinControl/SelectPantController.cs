@@ -27,6 +27,11 @@ public class SelectPantController : SelectSkinController
         BackToSelectedSkin();
     }
 
+    public override void CheckSkinLocked()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void SaveSkinData(int skinId)
     {
         if (skinId >= 0)
@@ -60,6 +65,7 @@ public class SelectPantController : SelectSkinController
             }
         }
     }
+
 
     protected override void TrySkin(Button clickedButton)
     {
@@ -110,5 +116,15 @@ public class SelectPantController : SelectSkinController
         {
             skinContainer.GetComponent<Renderer>().material = initialPantState.material;
         }
+    }
+
+    public override void BuySkin()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void TryOneTimeSkin()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 [System.Serializable]
 public class GameData
 {
@@ -12,11 +14,15 @@ public class GameData
         public int weaponColorId;
     }
 
+    [System.Serializable]
     public class SkinData
     {
         public int id;
         public bool enable;
         public bool hasBought;
+        public int cost;
+        public string feature;
+        public bool isTrying;
     }
 
     [System.Serializable]
@@ -24,11 +30,12 @@ public class GameData
     {
         public string name = "You";
         public WeaponData weapon = new WeaponData();
-        public SkinData hair = new SkinData();
+        public List<SkinData> hair = new List<SkinData>();
         public SkinData pant = new SkinData();
-        public SkinData shield = new SkinData();
+        public List<SkinData> shield = new List<SkinData>();
         public SkinData combo = new SkinData();
     }
 
     public PlayerData player = new PlayerData();
 }
+
