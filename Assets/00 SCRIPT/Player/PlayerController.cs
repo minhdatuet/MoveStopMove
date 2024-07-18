@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour
     protected LevelDisplay levelDisplay;
     [SerializeField] protected GameObject nameDisplayPrefab;
     [SerializeField] protected GameObject nameDisplayList;
+    [SerializeField] GameObject hairContainer;
+    [SerializeField] List<Material> pantList = new List<Material>();
+    [SerializeField] GameObject shieldContainer;
     protected NameDisplay nameDisplay;
     public NameDisplay NameDisplay
     {
@@ -79,6 +82,7 @@ public class PlayerController : MonoBehaviour
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
         DisplayLevelAndName();
+        StartCoroutine(SetBeginSkinCouroutine());
     }
 
     void Update()
@@ -92,6 +96,11 @@ public class PlayerController : MonoBehaviour
         }
         CheckState();
         _anim.UpdateAnimation(_state);
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(SetBeginSkinCouroutine());
     }
 
     public void SetWeapon()
@@ -121,6 +130,68 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    IEnumerator SetBeginSkinCouroutine()
+    {
+        yield return null;
+        GameData data = SaveLoadManager.Instance.LoadData();
+        if (data.player.hair.enable)
+        {
+            for (int i = 0; i < hairContainer.transform.childCount; i++)
+            {
+                if (i == data.player.hair.id)
+                {
+                    hairContainer.transform.GetChild(i).gameObject.SetActive(true);
+                } else
+                {
+                    hairContainer.transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+        }
+        if (data.player.pant.enable)
+        {
+            GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
+            playerPant.SetActive(true);
+            
+            for (int i = 0; i < pantList.Count; i++)
+            {
+                if (i == data.player.pant.id)
+                {
+                    Debug.Log("PANTS " + i);
+                    playerPant.GetComponent<Renderer>().material = pantList[i];
+                    break;
+                }
+
+            }
+        } else
+        {
+            GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
+            playerPant.SetActive(false);
+        }
+        if (data.player.shield.enable)
+        {
+            for (int i = 0; i < shieldContainer.transform.childCount; i++)
+            {
+                if (i == data.player.shield.id)
+                {
+                    shieldContainer.transform.GetChild(i).gameObject.SetActive(true);
+                }
+                else
+                {
+                    shieldContainer.transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+        }
+        for (int i = 0; i < weaponInHand.transform.childCount; i++)
+        {
+            if (i == data.player.weapon.weaponId)
+            {
+                weaponInHand.transform.GetChild(i).gameObject.SetActive(true);
+            } else
+            {
+                weaponInHand.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
 
     public virtual void Move()
     {
@@ -335,9 +406,8 @@ public class PlayerController : MonoBehaviour
         nameDisplay.target = this.transform;
         nameDisplay.offset = new Vector3(0, 1.4f, 0);
         nameDisplay.transform.localRotation = Quaternion.identity;
-        Debug.Log(PlayerPrefs.GetString("PlayerName"));
 
         nameDisplay.GetComponent<Text>().color = bodyColor.color;
-        nameDisplay.SetName(PlayerPrefs.GetString("PlayerName"));
+        nameDisplay.SetName(SaveLoadManager.Instance.LoadData().player.name);
     }
 }

@@ -61,5 +61,6 @@ public class SettingController : MonoBehaviour
 
         // Tải lại scene hiện tại
         SceneManager.LoadScene(currentSceneName);
+
     }
 }

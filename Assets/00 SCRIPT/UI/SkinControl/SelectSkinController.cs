@@ -12,6 +12,7 @@ public abstract class SelectSkinController : MonoBehaviour
     protected GameObject selectedSkin;
     protected Button selectedButton;
     [SerializeField] protected GameObject buttonContainer;
+    [SerializeField] protected GameData gameData;
 
     // Pant
     //[SerializeField] List<Button> pantButtonList = new List<Button>();
@@ -80,6 +81,8 @@ public abstract class SelectSkinController : MonoBehaviour
             buttonContainer.transform.GetChild(1).gameObject.SetActive(false);
         } 
     }
+
+    public abstract void SaveSkinData(int skinId);
 
     public abstract void SelectSkin();
 

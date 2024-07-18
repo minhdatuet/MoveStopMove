@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,8 +35,16 @@ public class GameManager : Singleton<GameManager>
     {
         inGameCanvas.gameObject.SetActive(false);
         endGameCanvas.gameObject.SetActive(true);
-        int currCoin = PlayerPrefs.GetInt("Coin");
-        PlayerPrefs.SetInt("Coin", currCoin + CameraController.Instance.player.gameObject.GetComponent<PlayerController>().Level);
-        Debug.Log(PlayerPrefs.GetInt("Coin"));
+        // Load dữ liệu trò chơi hiện tại
+        GameData data = SaveLoadManager.Instance.LoadData();
+
+        // Cập nhật giá trị coin
+        int additionalCoins = CameraController.Instance.player.gameObject.GetComponent<PlayerController>().Level;
+        data.coin += additionalCoins;
+
+        // Lưu dữ liệu trò chơi đã cập nhật
+        SaveLoadManager.Instance.SaveData(data);
+
+        Debug.Log("Updated Coin: " + data.coin);
     }
 }

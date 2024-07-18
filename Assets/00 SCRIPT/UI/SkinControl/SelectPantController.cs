@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class SelectPantController : SelectSkinController
@@ -17,13 +18,27 @@ public class SelectPantController : SelectSkinController
     private void OnEnable()
     {
         initialPantState.material = skinContainer.GetComponent<Renderer>().material;
-        
+        gameData = SaveLoadManager.Instance.LoadData();
         SetBeginSkin();
     }
 
     private void OnDisable()
     {
         BackToSelectedSkin();
+    }
+
+    public override void SaveSkinData(int skinId)
+    {
+        if (skinId >= 0)
+        {
+            gameData.player.pant.enable = true;
+            gameData.player.pant.id = skinId;
+        }
+        else
+        {
+            gameData.player.pant.enable = false;
+        }
+        SaveLoadManager.Instance.SaveData(gameData);
     }
 
     protected override void SetBeginSkin()
@@ -70,6 +85,7 @@ public class SelectPantController : SelectSkinController
                 Debug.Log("SELECT" + selectedButton.gameObject.name);
                 selectedButton.gameObject.transform.GetChild(1).gameObject.SetActive(true);
                 initialPantState.material = skinButtonList[i].transform.GetChild(0).GetComponent<Renderer>().material;
+                SaveSkinData(i);
                 CheckEquipped(skinButtonList[i]);
                 break;
             }
@@ -84,6 +100,7 @@ public class SelectPantController : SelectSkinController
         skinContainer.gameObject.SetActive(false);
         CheckEquipped(selectedButton);
         selectedButton.gameObject.GetComponent<Outline>().enabled = false;
+        SaveSkinData(-1);
         selectedSkin = null;
     }
 

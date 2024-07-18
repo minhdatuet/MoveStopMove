@@ -32,5 +32,12 @@ public class EndGameUIManager : Singleton<EndGameUIManager>
     public void SetRank(int rank)
     {
         rankText.text = "#" + rank.ToString();
+        GameData data = SaveLoadManager.Instance.LoadData();
+        if (data.rank > rank)
+        {
+            data.rank = rank;
+            SaveLoadManager.Instance.SaveData(data);
+            Debug.Log(SaveLoadManager.Instance.LoadData().rank);
+        }
     }
 }

@@ -19,6 +19,7 @@ public class SelectHairController : SelectSkinController
 
     private void OnEnable()
     {
+        gameData = SaveLoadManager.Instance.LoadData();
         SetBeginSkin();
     }
 
@@ -86,6 +87,7 @@ public class SelectHairController : SelectSkinController
                         Debug.Log("SELECT" + selectedButton.gameObject.name);
                         selectedButton.gameObject.transform.GetChild(1).gameObject.SetActive(true);
                         selectedSkin = skinContainer.transform.GetChild(i).gameObject;
+                        SaveSkinData(i);
                         CheckEquipped(skinButtonList[j]);
                         break;
                     }
@@ -95,12 +97,25 @@ public class SelectHairController : SelectSkinController
         }
     }
 
+    public override void SaveSkinData(int skinId)
+    {
+        if (skinId >= 0)
+        {
+            gameData.player.hair.enable = true;
+            gameData.player.hair.id = skinId;
+        } else
+        {
+            gameData.player.hair.enable = false;
+        }
+        SaveLoadManager.Instance.SaveData(gameData);
+    }
     public override void UnequippedSkin()
     {
         selectedButton.gameObject.transform.GetChild(1).gameObject.SetActive(false);
         selectedSkin.gameObject.SetActive(false);
         CheckEquipped(selectedButton);
         selectedButton.gameObject.GetComponent<Outline>().enabled = false;
+        SaveSkinData(-1);
         selectedSkin = null;
     }
 
