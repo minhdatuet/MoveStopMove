@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f;
+        radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f + 1.0f;
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
         DisplayLevelAndName();
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         {
             if (data.player.hair[i].enable)
             {
-                radiusAttack *= 1.05f;
+                //radiusAttack *= 1.05f;
                 hairContainer.transform.GetChild(i).gameObject.SetActive(true);
             }
             else
@@ -250,7 +250,7 @@ public class PlayerController : MonoBehaviour
             targetEnemy.GetChild(4).gameObject.SetActive(false);
         }
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack - 0.5f * currScale, enemyLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radiusAttack / 2, enemyLayer);
         if (hitColliders.Length > 1)
         {
             // Tìm enemy gần nhất
@@ -275,7 +275,7 @@ public class PlayerController : MonoBehaviour
     }
     public void CheckForEnemiesAndAttack()
     {
-        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack - 0.5f * currScale) 
+        if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack) 
         {
             _anim.attacking = true;
             _state = PlayerState.ATTACK;

@@ -108,7 +108,7 @@ public class WeaponController : MonoBehaviour
 
     void OnceAttack()
     {
-        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
+        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack / 2)
         {
             if (attacker.tag.Equals("Player"))
             {
@@ -121,7 +121,7 @@ public class WeaponController : MonoBehaviour
 
     void DoubleAttack()
     {
-        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack - 0.5f * attacker.GetComponent<PlayerController>().CurrScale)
+        if (attacker && Vector3.Distance(initPos, this.transform.position) >= radiusAttack / 2)
         {
             StartCoroutine(DoubleAttackCoroutine());
         }
@@ -171,6 +171,7 @@ public class WeaponController : MonoBehaviour
                 {
                     GameManager.Instance.EndGame();
                 }
+                Debug.Log(attacker.gameObject.GetComponent<PlayerController>().NameDisplay.GetName());
                 EndGameUIManager.Instance.SetKillerName(attacker.gameObject.GetComponent<PlayerController>().NameDisplay.GetName());
                 EndGameUIManager.Instance.SetRank(InGameUIManager.Instance.AliveEnemy);
             }
