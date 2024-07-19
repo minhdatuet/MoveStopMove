@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class SelectPantController : SelectSkinController
     {
         initialPantState.material = skinContainer.GetComponent<Renderer>().material;
         gameData = SaveLoadManager.Instance.LoadData();
+        CheckSkinLocked();
         SetBeginSkin();
     }
 
@@ -29,19 +31,38 @@ public class SelectPantController : SelectSkinController
 
     public override void CheckSkinLocked()
     {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < gameData.player.pant.Count; i++)
+        {
+            if (gameData.player.pant[i].hasBought || gameData.player.pant[i].isTrying)
+            {
+                skinButtonList[i].transform.GetChild(2).gameObject.SetActive(false);
+            }
+        }
     }
 
     public override void SaveSkinData(int skinId)
     {
-        if (skinId >= 0)
+        Debug.Log("SELECT PANT " + skinId);
+        if (skinId >= 0 && skinId < gameData.player.pant.Count)
         {
-            gameData.player.pant.enable = true;
-            gameData.player.pant.id = skinId;
+            for (int i = 0; i < gameData.player.pant.Count; i++)
+            {
+                if (i == skinId)
+                {
+                    gameData.player.pant[skinId].enable = true;
+                }
+                else
+                {
+                    gameData.player.pant[i].enable = false;
+                }
+            }
         }
         else
         {
-            gameData.player.pant.enable = false;
+            for (int i = 0; i < gameData.player.pant.Count; i++)
+            {
+                gameData.player.pant[i].enable = false;
+            }
         }
         SaveLoadManager.Instance.SaveData(gameData);
     }
@@ -49,21 +70,23 @@ public class SelectPantController : SelectSkinController
     protected override void SetBeginSkin()
     {
         base.SetBeginSkin();
-        selectedSkin = skinContainer.gameObject;
-        Debug.Log(selectedSkin.gameObject.GetComponent<Renderer>().material.name);
-        for (int i = 0; i < skinButtonList.Count; i++)
+        if (skinContainer.gameObject.activeInHierarchy)
         {
-            string materialName = selectedSkin.gameObject.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
-            string buttonMaterialName = skinButtonList[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
-
-            if (materialName == buttonMaterialName)
+            selectedSkin = skinContainer.gameObject;
+            for (int i = 0; i < skinButtonList.Count; i++)
             {
-                TrySkin(skinButtonList[i]);
-                skinButtonList[i].gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                selectedButton = skinButtonList[i];
-                CheckEquipped(skinButtonList[i]);
+                string materialName = selectedSkin.gameObject.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+                string buttonMaterialName = skinButtonList[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+
+                if (materialName == buttonMaterialName)
+                {
+                    skinButtonList[i].gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                    selectedButton = skinButtonList[i];
+                    TrySkin(skinButtonList[i]);
+                }
             }
         }
+        
     }
 
 
@@ -72,7 +95,7 @@ public class SelectPantController : SelectSkinController
         base.TrySkin(clickedButton);
         skinContainer.SetActive(true);
         skinContainer.gameObject.GetComponent<Renderer>().material = clickedButton.transform.GetChild(0).gameObject.GetComponent<Renderer>().material;
-        selectedSkin = skinContainer.gameObject; 
+        selectedSkin = skinContainer.gameObject;
     }
 
     public override void SelectSkin()
@@ -85,7 +108,6 @@ public class SelectPantController : SelectSkinController
             if (materialName == buttonMaterialName)
             {
                 Button currentButton = skinButtonList[i];
-                Debug.Log(selectedButton.gameObject.name);
                 if (selectedButton) selectedButton.gameObject.transform.GetChild(1).gameObject.SetActive(false);
                 selectedButton = currentButton;
                 Debug.Log("SELECT" + selectedButton.gameObject.name);
@@ -120,11 +142,52 @@ public class SelectPantController : SelectSkinController
 
     public override void BuySkin()
     {
-        throw new System.NotImplementedException();
+        int skinCost = Int32.Parse(buyButtonContainer.transform.GetChild(0).gameObject.GetComponentInChildren<Text>().text);
+        if (gameData.coin >= skinCost)
+        {
+            gameData.coin -= skinCost;
+
+            for (int i = 0; i < skinButtonList.Count; i++)
+            {
+                string materialName = skinContainer.transform.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+                string buttonMaterialName = skinButtonList[i].transform.GetChild(0).GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+
+                if (materialName == buttonMaterialName)
+                {
+                    gameData.player.pant[i].hasBought = true;
+                    SaveLoadManager.Instance.SaveData(gameData);
+                    CheckSkinLocked();
+                    TrySkin(skinButtonList[i]);
+                    break;
+                }
+            }
+
+            StartCoroutine(MenuUIManager.Instance.SetDataCoroutine());
+        }
     }
 
     public override void TryOneTimeSkin()
     {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < skinButtonList.Count; i++)
+        {
+            string materialName = skinContainer.transform.GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+            string buttonMaterialName = skinButtonList[i].transform.GetChild(0).GetComponent<Renderer>().material.name.Replace(" (Instance)", "").Replace(" (Material)", "");
+
+            if (materialName == buttonMaterialName)
+            {
+                gameData.player.pant[i].isTrying = true;
+                SaveLoadManager.Instance.SaveData(gameData);
+                CheckSkinLocked();
+                TrySkin(skinButtonList[i]);
+                break;
+            }
+        }
+
+        StartCoroutine(MenuUIManager.Instance.SetDataCoroutine());
+    }
+
+    protected override void SetCost(int skinIndex)
+    {
+        buyButtonContainer.transform.GetChild(0).GetComponentInChildren<Text>().text = gameData.player.pant[skinIndex].cost.ToString();
     }
 }

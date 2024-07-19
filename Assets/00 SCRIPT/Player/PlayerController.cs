@@ -4,6 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
+using static WeaponList;
 using PlayerState = CONSTANT.PlayerState;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
@@ -18,11 +19,17 @@ public class PlayerController : MonoBehaviour
     protected GameObject weapon;
     [SerializeField] protected GameObject weaponList;
     [SerializeField] protected GameObject weaponInHand;
+    [SerializeField] protected GameObject weaponColorContainer;
     public GameObject WeaponInHand
     {
         get { return weaponInHand; }
     }
     [SerializeField] protected float speed = CONSTANT.PLAYER_SPEED;
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
     [SerializeField] protected float radiusAttack;
     public float RadiusAttack
     {
@@ -100,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(SetBeginSkinCouroutine());
+        if (gameObject.CompareTag("Player")) StartCoroutine(SetBeginSkinCouroutine());
     }
 
     public void SetWeapon()
@@ -138,7 +145,7 @@ public class PlayerController : MonoBehaviour
         {
             if (data.player.hair[i].enable)
             {
-
+                radiusAttack *= 1.05f;
                 hairContainer.transform.GetChild(i).gameObject.SetActive(true);
             }
             else
@@ -146,26 +153,20 @@ public class PlayerController : MonoBehaviour
                 hairContainer.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
-        
-        if (data.player.pant.enable)
+        GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
+        for (int i = 0; i < data.player.pant.Count; i++)
         {
-            GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
-            playerPant.SetActive(true);
-            
-            for (int i = 0; i < pantList.Count; i++)
+            if (data.player.pant[i].enable)
             {
-                if (i == data.player.pant.id)
-                {
-                    Debug.Log("PANTS " + i);
-                    playerPant.GetComponent<Renderer>().material = pantList[i];
-                    break;
-                }
-
+                speed = CONSTANT.PLAYER_SPEED * 1.08f;
+                playerPant.SetActive(true);
+                playerPant.GetComponent<Renderer>().material = pantList[i];
+                break;
             }
-        } else
-        {
-            GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
-            playerPant.SetActive(false);
+            if (i == data.player.pant.Count - 1)
+            {
+                playerPant.SetActive(false);
+            }
         }
         for (int i = 0; i < data.player.shield.Count; i++)
         {
@@ -181,10 +182,19 @@ public class PlayerController : MonoBehaviour
         }
         for (int i = 0; i < weaponInHand.transform.childCount; i++)
         {
-            if (i == data.player.weapon.weaponId)
+            if (data.player.weapon[i].enable)
             {
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(true);
-            } else
+                for (int j = 0; j < data.player.weapon[i].color.Count; j++)
+                {
+                    if (data.player.weapon[i].color[j].enable)
+                    {
+                        GameObject currColor = weaponColorContainer.transform.GetChild(j).transform.GetChild(0).gameObject;
+                        weaponInHand.transform.GetChild(i).gameObject.GetComponent<Renderer>().materials = currColor.transform.GetChild(i).GetComponent<Renderer>().materials;
+                    }
+                }
+            }
+            else
             {
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(false);
             }

@@ -14,7 +14,7 @@ public abstract class SelectSkinController : MonoBehaviour
     [SerializeField] protected GameObject selectButtonContainer;
     [SerializeField] protected GameObject buyButtonContainer;
     [SerializeField] protected GameData gameData;
-    [SerializeField] GameObject oneTimeText;
+    [SerializeField] protected GameObject oneTimeText;
 
 
 
@@ -55,15 +55,7 @@ public abstract class SelectSkinController : MonoBehaviour
             {
                 clickedButton.gameObject.GetComponent<Outline>().enabled = true;
                 SetCost(i);
-                if (gameData.player.hair[i].isTrying)
-                {
-
-                    oneTimeText.SetActive(true);
-                }
-                else
-                {
-                    oneTimeText.SetActive(false);
-                }
+                
             }
             else
             {
@@ -75,10 +67,8 @@ public abstract class SelectSkinController : MonoBehaviour
         CheckEquipped(clickedButton);
     }
 
-    protected void SetCost(int skinIndex)
-    {
-        buyButtonContainer.transform.GetChild(0).GetComponentInChildren<Text>().text = gameData.player.hair[skinIndex].cost.ToString();
-    }
+    protected abstract void SetCost(int skinIndex);
+    
     protected void CheckBought(Button clickedButton)
     {
         if (!clickedButton.transform.GetChild(2).gameObject.activeInHierarchy)

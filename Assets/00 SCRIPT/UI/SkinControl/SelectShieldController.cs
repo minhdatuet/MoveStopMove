@@ -22,6 +22,7 @@ public class SelectShieldController : SelectHairController
     private void OnEnable()
     {
         gameData = SaveLoadManager.Instance.LoadData();
+        CheckSkinLocked();
         SetBeginSkin();
     }
 
@@ -30,6 +31,18 @@ public class SelectShieldController : SelectHairController
         BackToSelectedSkin();
     }
 
+    protected override void CheckTryingSkin(int skinId)
+    {
+        if (gameData.player.shield[skinId].isTrying)
+        {
+
+            oneTimeText.SetActive(true);
+        }
+        else
+        {
+            oneTimeText.SetActive(false);
+        }
+    }
     public override void SaveSkinData(int skinId)
     {
         Debug.Log("SELECT shield " + skinId);
@@ -105,5 +118,10 @@ public class SelectShieldController : SelectHairController
                 skinButtonList[i].transform.GetChild(2).gameObject.SetActive(false);
             }
         }
+    }
+
+    protected override void SetCost(int skinIndex)
+    {
+        buyButtonContainer.transform.GetChild(0).GetComponentInChildren<Text>().text = gameData.player.shield[skinIndex].cost.ToString();
     }
 }

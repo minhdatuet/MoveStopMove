@@ -10,8 +10,20 @@ public class GameData
     [System.Serializable]
     public class WeaponData
     {
-        public int weaponId;
-        public int weaponColorId;
+        public int id;
+        public int cost;
+        public bool enable;
+        public bool hasBought;
+        public string feature;
+        public List<WeaponColorData> color = new List<WeaponColorData>();
+    }
+
+    [System.Serializable]
+    public class WeaponColorData
+    {
+        public int id;
+        public bool enable;
+        public bool isUnLocked;
     }
 
     [System.Serializable]
@@ -29,9 +41,9 @@ public class GameData
     public class PlayerData
     {
         public string name = "You";
-        public WeaponData weapon = new WeaponData();
+        public List<WeaponData> weapon = new List<WeaponData>();
         public List<SkinData> hair = new List<SkinData>();
-        public SkinData pant = new SkinData();
+        public List<SkinData> pant = new List<SkinData>();
         public List<SkinData> shield = new List<SkinData>();
         public SkinData combo = new SkinData();
     }

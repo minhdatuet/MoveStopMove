@@ -60,7 +60,7 @@ public class SelectHairController : SelectSkinController
                         TrySkin(skinButtonList[j]);
                     }
                 }
-
+                
                 break;
             }
         }
@@ -74,11 +74,30 @@ public class SelectHairController : SelectSkinController
             if (skinContainer.transform.GetChild(i).gameObject.name == clickedButton.transform.GetChild(0).gameObject.name)
             {
                 skinContainer.transform.GetChild(i).gameObject.SetActive(true);
+                CheckTryingSkin(i);
             }
             else
             {
                 skinContainer.transform.GetChild(i).gameObject.SetActive(false);
             }
+        }
+    }
+
+    protected override void SetCost(int skinIndex)
+    {
+        buyButtonContainer.transform.GetChild(0).GetComponentInChildren<Text>().text = gameData.player.hair[skinIndex].cost.ToString();
+    }
+
+    protected virtual void CheckTryingSkin(int skinId)
+    {
+        if (gameData.player.hair[skinId].isTrying)
+        {
+
+            oneTimeText.SetActive(true);
+        }
+        else
+        {
+            oneTimeText.SetActive(false);
         }
     }
 

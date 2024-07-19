@@ -10687,6 +10687,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -67.48
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1c040a6e7d23e904b87e93fb9c66a037,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 342e6be25858b9e41b1466055d2ab356, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 1c040a6e7d23e904b87e93fb9c66a037,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 342e6be25858b9e41b1466055d2ab356, type: 2}
     - target: {fileID: 100000, guid: 1c040a6e7d23e904b87e93fb9c66a037, type: 3}
       propertyPath: m_Name
       value: Axe
@@ -11088,6 +11098,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -74.7
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 90389cac50942cb4ca38583e6531094a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cdc62da523c79bf4d9497b256c1e2ed2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 90389cac50942cb4ca38583e6531094a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: cdc62da523c79bf4d9497b256c1e2ed2, type: 2}
     - target: {fileID: 100000, guid: 90389cac50942cb4ca38583e6531094a, type: 3}
       propertyPath: m_Name
       value: Hammer
@@ -12261,6 +12281,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -64.54
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ecd6cb62ed8350e498f9e25d15d9caa3,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 962f8910cafc83940b5cf483fff88401, type: 2}
+    - target: {fileID: -7511558181221131132, guid: ecd6cb62ed8350e498f9e25d15d9caa3,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 962f8910cafc83940b5cf483fff88401, type: 2}
     - target: {fileID: 100000, guid: ecd6cb62ed8350e498f9e25d15d9caa3, type: 3}
       propertyPath: m_Name
       value: Knife
@@ -12398,6 +12428,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -75.49
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6083ff9012eefa348b00b8c543f1a742,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 45f727f7b6a6f2b49bb386d1a39b5e00, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 6083ff9012eefa348b00b8c543f1a742,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 45f727f7b6a6f2b49bb386d1a39b5e00, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 6083ff9012eefa348b00b8c543f1a742,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 45f727f7b6a6f2b49bb386d1a39b5e00, type: 2}
     - target: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
       propertyPath: m_Name
       value: Battle Axe
@@ -12564,6 +12609,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 101.7
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cb6e597070ed41f4eb5cb9583c725959,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1e8052f142f24554c9cc4692768515e6, type: 2}
     - target: {fileID: 100000, guid: cb6e597070ed41f4eb5cb9583c725959, type: 3}
       propertyPath: m_Name
       value: Boomerang
@@ -13454,6 +13504,9 @@ MonoBehaviour:
   nameDisplayPrefab: {fileID: 5413310538152729119, guid: dc962403b3f05d44bbe36b885b57de81,
     type: 3}
   nameDisplayList: {fileID: 0}
+  hairContainer: {fileID: 0}
+  pantList: []
+  shieldContainer: {fileID: 0}
   minIdleDuration: 2
   maxIdleDuration: 3
   moveTimeLimit: 4
