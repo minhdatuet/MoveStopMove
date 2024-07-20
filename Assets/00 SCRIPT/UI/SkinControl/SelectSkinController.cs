@@ -113,7 +113,7 @@ public abstract class SelectSkinController : MonoBehaviour
 
     public void ChangeCameraPos()
     {
-        Vector3 newPos = new Vector3(0, 3, -10);
+        Vector3 newPos = new Vector3(0, 4, -10);
         Vector3 oldPos = new Vector3(0, 5, -10);
         if (Camera.main.transform.position != newPos)
         {

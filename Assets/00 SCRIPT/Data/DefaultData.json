@@ -1,0 +1,600 @@
+{
+  "zone": 1,
+  "rank": 50,
+  "coin": 3450,
+  "player": {
+    "name": "Dat",
+    "weapon": [
+      {
+        "id": 0,
+        "cost": 0,
+        "enable": true,
+        "hasBought": true,
+        "feature": "+1 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "cost": 50,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+3 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "cost": 100,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+5 Attack Speed",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "cost": 200,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+5 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "cost": 400,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+5 Range*2",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "cost": 600,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+10 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "cost": 800,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+15 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "cost": 1000,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+15 Attack Speed",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "cost": 1500,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+20 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "cost": 2000,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+10 Range*2",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "cost": 2500,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+25 Attack Speed",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "cost": 3000,
+        "enable": false,
+        "hasBought": false,
+        "feature": "+25 Range",
+        "color": [
+          {
+            "id": 0,
+            "enable": true,
+            "isUnLocked": true
+          },
+          {
+            "id": 1,
+            "enable": false,
+            "isUnLocked": true
+          },
+          {
+            "id": 2,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 3,
+            "enable": false,
+            "isUnLocked": false
+          },
+          {
+            "id": 4,
+            "enable": false,
+            "isUnLocked": true
+          }
+        ]
+      }
+    ],
+    "hair": [
+      {
+        "id": 0,
+        "enable": true,
+        "hasBought": true,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 1,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 2,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 3,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 4,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 5,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 6,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 7,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 8,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      },
+      {
+        "id": 9,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "5% Range",
+        "isTrying": false
+      }
+    ],
+    "pant": [
+      {
+        "id": 0,
+        "enable": true,
+        "hasBought": true,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 1,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 2,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 3,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 4,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 5,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 6,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 7,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      },
+      {
+        "id": 8,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "8% Move Speed",
+        "isTrying": false
+      }
+    ],
+    "shield": [
+      {
+        "id": 0,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "25% Gold",
+        "isTrying": false
+      },
+      {
+        "id": 1,
+        "enable": false,
+        "hasBought": false,
+        "cost": 500,
+        "feature": "25% Gold",
+        "isTrying": false
+      }
+    ],
+    "combo": {
+      "id": 0,
+      "enable": false,
+      "hasBought": false,
+      "cost": 0,
+      "feature": null,
+      "isTrying": false
+    }
+  }
+}

@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         set { radiusAttack = value; }
     }
     Transform targetEnemy;
-    [SerializeField] protected float attackForce = 2.0f; // Lực bay (tốc độ bay) của đạn
+    [SerializeField] protected float attackForce = 4.0f; // Lực bay (tốc độ bay) của đạn
     [SerializeField] protected float attackOffset = 0.7f; // Khoảng cách từ nhân vật tới vị trí xuất phát của đạn
     [SerializeField] protected float scaleRate = 1.1f; // Tỉ lệ phóng đại khi bắn trúng enemy
     [SerializeField] protected float currScale = 1.0f; // Tỉ lệ phóng đại hiện tại
@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour
         {
             if (data.player.hair[i].enable)
             {
-                //radiusAttack *= 1.05f;
                 hairContainer.transform.GetChild(i).gameObject.SetActive(true);
             }
             else
@@ -158,7 +157,6 @@ public class PlayerController : MonoBehaviour
         {
             if (data.player.pant[i].enable)
             {
-                speed = CONSTANT.PLAYER_SPEED * 1.08f;
                 playerPant.SetActive(true);
                 playerPant.GetComponent<Renderer>().material = pantList[i];
                 break;
@@ -220,6 +218,91 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
+    public void SetAdditionalFeature()
+    {
+        for (int i = 0; i < hairContainer.transform.childCount; i++)
+        {
+            if (hairContainer.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                radiusAttack *= 1.05f;
+                gameObject.transform.GetChild(3).localScale *= 1.05f;
+                break;
+            }
+        }
+
+        if (gameObject.transform.GetChild(2).gameObject.activeInHierarchy)
+        {
+            speed *= 1.08f;
+        }
+
+        for (int i = 0; i < WeaponInHand.transform.childCount; i++)
+        {
+            if (WeaponInHand.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                switch (i)
+                {
+                    case 0:
+                        {
+                            radiusAttack += 0.1f;
+                            break;
+                        }
+                    case 1:
+                        {
+                            radiusAttack += 0.3f;
+                            break;
+                        }
+                    case 2:
+                        {
+                            attackForce += 0.5f;
+                            break;
+                        }
+                    case 3:
+                    case 4:
+                        {
+                            radiusAttack += 0.5f;
+                            break;
+                        }
+                    case 5:
+                        {
+                            radiusAttack += 1f;
+                            break;
+                        }
+                    case 6:
+                        {
+                            radiusAttack += 1.5f;
+                            break;
+                        }
+                    case 7:
+                        {
+                            attackForce += 1.5f;
+                            break;
+                        }
+                    case 8:
+                        {
+                            radiusAttack += 2f;
+                            break;
+                        }
+                    case 9:
+                        {
+                            radiusAttack += 1f;
+                            break;
+                        }
+                    case 10:
+                        {
+                            attackForce += 2.5f;
+                            break;
+                        }
+                    case 11:
+                        {
+                            attackForce += 2.5f;
+                            break;
+                        }
+                }
+                break;
+            }
+        }
+    }
+
     private IEnumerator WaitAndAttack()
     { 
         if (canAttack)
@@ -277,6 +360,7 @@ public class PlayerController : MonoBehaviour
     {
         if (canAttack && _state == PlayerState.IDLE && weaponInHand.activeInHierarchy && targetEnemy && Vector3.Distance(transform.position, targetEnemy.transform.position) < radiusAttack) 
         {
+            if (gameObject.CompareTag("Player") && !targetEnemy.GetChild(4).gameObject.activeInHierarchy) return;
             _anim.attacking = true;
             _state = PlayerState.ATTACK;
             _anim.UpdateAnimation(_state);
@@ -321,8 +405,8 @@ public class PlayerController : MonoBehaviour
         }
         yield return new WaitForSeconds(1.0f);
         gameObject.SetActive(false);
-        nameDisplay.gameObject.SetActive(false);
-        levelDisplay.gameObject.SetActive(false);
+        if (nameDisplay) nameDisplay.gameObject.SetActive(false);
+        if (levelDisplay) levelDisplay.gameObject.SetActive(false);
 
     }
 
@@ -330,9 +414,10 @@ public class PlayerController : MonoBehaviour
     {
         isDead = false;
         gameObject.SetActive(true);
-        nameDisplay.gameObject.SetActive(true);
-        levelDisplay.gameObject.SetActive(true);
+        if (nameDisplay) nameDisplay.gameObject.SetActive(true);
+        if (levelDisplay) levelDisplay.gameObject.SetActive(true);
     }
+
 
     public void PoolingWeapon()
     {
@@ -353,7 +438,10 @@ public class PlayerController : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             float fov = Camera.main.fieldOfView;
-            fov += 5f;
+            //Quaternion camRotate = Camera.main.transform.rotation;
+            //camRotate.x *= scaleRate;
+            //Camera.main.transform.rotation = camRotate;
+            fov += 7f;
             Camera.main.fieldOfView = fov;
         }
         level++;

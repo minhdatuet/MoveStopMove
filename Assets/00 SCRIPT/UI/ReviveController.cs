@@ -32,4 +32,6 @@ public class ReviveController : Singleton<ReviveController>
         CameraController.Instance.player.GetComponent<PlayerController>().RevivePlayer();
         GameManager.Instance.IsRevive = false;
     }
+
+
 }

@@ -67,7 +67,7 @@ public class EndGameUIManager : Singleton<EndGameUIManager>
     {
         if (rankSlider)
         {
-            rankSlider.value = (minRank - rank) / minRank;
+            rankSlider.value = (minRank - rank) * 1.0f / minRank;
         }
     }
 
@@ -75,7 +75,7 @@ public class EndGameUIManager : Singleton<EndGameUIManager>
     {
         if (bestRankSlider)
         {
-            bestRankSlider.value = (minRank - SaveLoadManager.Instance.LoadData().rank) / minRank;
+            bestRankSlider.value = (minRank - SaveLoadManager.Instance.LoadData().rank) * 1.0f / minRank;
         }
     }
 }

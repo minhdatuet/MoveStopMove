@@ -18,7 +18,7 @@ public class TransparentObjects : MonoBehaviour
 
     void Update()
     {
-        radiusAttack = target.GetComponent<PlayerController>().RadiusAttack - 0.5f* target.GetComponent<PlayerController>().CurrScale;
+        radiusAttack = target.GetComponent<PlayerController>().RadiusAttack / 2;
 
         // Khôi phục lại các vật thể trước đó
         foreach (Renderer renderer in lastRenderers)

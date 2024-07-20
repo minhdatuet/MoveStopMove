@@ -10,7 +10,7 @@ public class WeaponController : MonoBehaviour
     bool hasRotatedTowardsAttacker = false;
 
     [SerializeField] GameObject attacker;
-    [SerializeField] float rotationSpeed = 720f;
+    [SerializeField] float rotationSpeed = 2000f;
 
     public GameObject Attacker
     {
@@ -136,7 +136,7 @@ public class WeaponController : MonoBehaviour
         {
             targetPos = attacker.transform.position;
             Debug.Log(targetPos);
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 5.0f);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 4.0f);
             yield return null;
         }
 
