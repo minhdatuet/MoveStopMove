@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject shieldContainer;
     [SerializeField] List<Image> customColorList = new List<Image>();
     protected NameDisplay nameDisplay;
+    GameData data;
     public NameDisplay NameDisplay
     {
         get { return nameDisplay; }
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        data = SaveLoadManager.Instance.LoadData();
         radiusAttack = attackRange.GetComponent<Renderer>().bounds.size.x * 0.5f + 1.0f;
         bodyColor = transform.GetChild(1).GetComponent<Renderer>().material;
         enemyLayer = LayerMask.GetMask("Enemy");
@@ -95,6 +97,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        data = SaveLoadManager.Instance.LoadData();
         CheckDeath();
         if (!isDead)
         {
@@ -108,7 +111,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (gameObject.CompareTag("Player")) StartCoroutine(SetBeginSkinCouroutine());
+        if (gameObject.CompareTag("Player"))
+        {
+            StartCoroutine(SetBeginSkinCouroutine());
+        }
+            
     }
 
     public void SetWeapon()
@@ -141,7 +148,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator SetBeginSkinCouroutine()
     {
         yield return null;
-        GameData data = SaveLoadManager.Instance.LoadData();
         for (int i = 0; i < data.player.hair.Count; i++)
         {
             if (data.player.hair[i].enable)
@@ -208,6 +214,54 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+    }
+
+    public void CheckOneTimeSkin()
+    {
+        Debug.Log("ONE TIME");
+        for (int i = 0; i < hairContainer.transform.childCount; i++)
+        {
+            if (data.player.hair[i].enable)
+            {
+                
+                if (data.player.hair[i].isTrying)
+                {
+                    data.player.hair[i].isTrying = false;
+                    data.player.hair[i].enable = false;
+                    hairContainer.transform.GetChild(i).gameObject.SetActive(false);
+                }
+                break;
+            }
+        }
+
+        for (int i = 0; i < shieldContainer.transform.childCount; i++)
+        {
+            if (data.player.shield[i].enable)
+            {
+                if (data.player.shield[i].isTrying)
+                {
+                    data.player.shield[i].isTrying = false;
+                    data.player.shield[i].enable = false;
+                    shieldContainer.transform.GetChild(i).gameObject.SetActive(false);
+                }
+                break;
+            }
+        }
+        GameObject playerPant = gameObject.transform.GetChild(2).gameObject;
+        for (int i = 0; i < pantList.Count; i++)
+        {
+            if (data.player.pant[i].enable)
+            {
+                if (data.player.pant[i].isTrying)
+                {
+                    data.player.pant[i].isTrying = false;
+                    data.player.pant[i].enable = false;
+                    playerPant.SetActive(false);
+                }
+                break;
+            }
+        }
+        SaveLoadManager.Instance.SaveData(data);
     }
 
     public virtual void Move()

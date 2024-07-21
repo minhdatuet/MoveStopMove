@@ -28,4 +28,11 @@ public class CameraController : Singleton<CameraController>
             transform.position = player.transform.position + offset;
         }
     }
+
+    public void CheckOneTimeSkin()
+    {
+        player.GetComponent<PlayerController>().CheckOneTimeSkin();
+    }
+
+   
 }
