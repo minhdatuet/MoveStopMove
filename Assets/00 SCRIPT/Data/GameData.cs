@@ -16,6 +16,7 @@ public class GameData
         public bool hasBought;
         public string feature;
         public List<WeaponColorData> color = new List<WeaponColorData>();
+        public List<PartColor> partColor = new List<PartColor>();
     }
 
     [System.Serializable]
@@ -24,6 +25,13 @@ public class GameData
         public int id;
         public bool enable;
         public bool isUnLocked;
+    }
+
+    [System.Serializable]
+    public class PartColor
+    {
+        public int id;
+        public int colorId;
     }
 
     [System.Serializable]

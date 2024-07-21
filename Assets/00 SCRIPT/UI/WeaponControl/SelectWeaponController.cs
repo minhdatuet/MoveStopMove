@@ -20,6 +20,8 @@ public class SelectWeaponController : MonoBehaviour
     [SerializeField] GameObject weaponColorContainer;
     [SerializeField] List<Button> weaponColorList = new List<Button>();
     [SerializeField] Text lockText;
+    [SerializeField] GameObject customColor;
+    [SerializeField] List<Image> customColorList = new List<Image>();
     GameData gameData;
     GameObject tryingWeapon;
     GameObject tryingContainer;
@@ -66,6 +68,7 @@ public class SelectWeaponController : MonoBehaviour
                     CheckButtonDisplay(i);
                     CheckLocked(i);
                     CheckCanBuy(i);
+                    SetCustomWeaponColor(i);
                     weaponNameText.text = weapons[i].name.ToUpper();
                     for (int j = 0; j < weaponColorContainer.transform.childCount; j++)
                     {
@@ -87,6 +90,7 @@ public class SelectWeaponController : MonoBehaviour
                             currColor.GetComponent<Outline>().enabled = true;
                             weapons[i].GetComponent<Renderer>().materials = currColor.transform.GetChild(0).transform.GetChild(i).transform.gameObject.GetComponent<Renderer>().materials;
                             SetSelectedText(j);
+                            OpenCustomColor(j);
                         }
                         else
                         {
@@ -120,6 +124,7 @@ public class SelectWeaponController : MonoBehaviour
             {
                 SetSelectedText(i);
                 clickedButton.gameObject.GetComponent<Outline>().enabled = true;
+                OpenCustomColor(i);
             }
             else
             {
@@ -135,6 +140,24 @@ public class SelectWeaponController : MonoBehaviour
                 tryingWeapon.GetComponent<Renderer>().materials = tryingWeaponColor.GetComponent<Renderer>().materials;
                 break;
             }
+        }
+
+    }
+
+    void OpenCustomColor(int colorIndex)
+    {
+        if (colorIndex == 4)
+        {
+            customColor.SetActive(true);
+            Vector3 buttonPos = selectButton.transform.parent.localPosition;
+            buttonPos.y = -300;
+            selectButton.transform.parent.localPosition = buttonPos;
+        } else
+        {
+            customColor.SetActive(false);
+            Vector3 buttonPos = selectButton.transform.parent.localPosition;
+            buttonPos.y = 0;
+            selectButton.transform.parent.localPosition = buttonPos;
         }
     }
 
@@ -206,6 +229,17 @@ public class SelectWeaponController : MonoBehaviour
         }
     }
 
+    void SetCustomWeaponColor(int weaponIndex)
+    {
+        GameObject weaponIcon = weaponColorList[4].transform.GetChild(0).GetChild(weaponIndex).gameObject;
+        int len = weapons[weaponIndex].GetComponent<Renderer>().materials.Length > 2 ? 2 : weapons[weaponIndex].GetComponent<Renderer>().materials.Length;
+        for (int j = 0; j < len; j++)
+        {
+            weapons[weaponIndex].GetComponent<Renderer>().materials[j].color = customColorList[gameData.player.weapon[weaponIndex].partColor[j].id].color;
+            weaponIcon.GetComponent<Renderer>().materials[j].color = customColorList[gameData.player.weapon[weaponIndex].partColor[j].id].color;
+        }
+    }
+
     public void PreviousWeapon()
     {
         int len = weapons.Count;
@@ -222,6 +256,7 @@ public class SelectWeaponController : MonoBehaviour
                     weapons[i].SetActive(false);
                     weapons[i-1].SetActive(true);
                     CheckCanBuy(i - 1);
+                    SetCustomWeaponColor(i-1);
                     for (int j = 0; j < weaponColorContainer.transform.childCount; j++)
                     {
                         GameObject currColor = weaponColorContainer.transform.GetChild(j).gameObject;
@@ -243,6 +278,7 @@ public class SelectWeaponController : MonoBehaviour
                         {
                             currColor.GetComponent<Outline>().enabled = true;
                             SetSelectedText(j);
+                            OpenCustomColor(j);
                             weapons[i-1].GetComponent<Renderer>().materials = currColor.transform.GetChild(0).transform.GetChild(i - 1).transform.gameObject.GetComponent<Renderer>().materials;
                         }
                         else
@@ -273,6 +309,7 @@ public class SelectWeaponController : MonoBehaviour
                     CheckLocked(i + 1);
                     weapons[i].SetActive(false);
                     weapons[i + 1].SetActive(true);
+                    SetCustomWeaponColor(i + 1);
                     for (int j = 0; j < weaponColorContainer.transform.childCount; j++)
                     {
                         GameObject currColor = weaponColorContainer.transform.GetChild(j).gameObject;
@@ -294,6 +331,7 @@ public class SelectWeaponController : MonoBehaviour
                         {
                             currColor.GetComponent<Outline>().enabled = true;
                             SetSelectedText(j);
+                            OpenCustomColor(j);
                             weapons[i+1].GetComponent<Renderer>().materials = currColor.transform.GetChild(0).transform.GetChild(i+1).transform.gameObject.GetComponent<Renderer>().materials;
                         }
                         else
@@ -312,14 +350,15 @@ public class SelectWeaponController : MonoBehaviour
     public void SelectWeaponInHand()
     {
         int len = weapons.Count;
+        gameData = SaveLoadManager.Instance.LoadData();
         for (int i = 0; i < len; i++)
         {
             if (weapons[i].activeInHierarchy)
             {
                 Debug.Log(weaponInHand.transform.GetChild(i).gameObject.name);
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(true);
-                SetWeaponColor(i);
                 gameData.player.weapon[i].enable = true;
+                SetWeaponColor(i);
 
             } else
             {
@@ -338,7 +377,7 @@ public class SelectWeaponController : MonoBehaviour
             if (currColor.GetComponent<Outline>().enabled)
             {
                 gameData.player.weapon[weaponId].color[i].enable = true;
-                weaponInHand.transform.GetChild(weaponId).gameObject.GetComponent<Renderer>().materials = weapons[weaponId].GetComponent<Renderer>().materials;
+                //weaponInHand.transform.GetChild(weaponId).gameObject.GetComponent<Renderer>().materials = weapons[weaponId].GetComponent<Renderer>().materials;
             } else
             {
                 gameData.player.weapon[weaponId].color[i].enable = false;

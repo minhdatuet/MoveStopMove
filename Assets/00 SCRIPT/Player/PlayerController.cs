@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject hairContainer;
     [SerializeField] List<Material> pantList = new List<Material>();
     [SerializeField] GameObject shieldContainer;
+    [SerializeField] List<Image> customColorList = new List<Image>();
     protected NameDisplay nameDisplay;
     public NameDisplay NameDisplay
     {
@@ -191,11 +192,21 @@ public class PlayerController : MonoBehaviour
                         weaponInHand.transform.GetChild(i).gameObject.GetComponent<Renderer>().materials = currColor.transform.GetChild(i).GetComponent<Renderer>().materials;
                     }
                 }
+                //weaponInHand.transform.GetChild(i).GetComponent<Renderer>().materials.Length
+                if (data.player.weapon[i].color[4].enable)
+                {
+                    for (int j = 0; j < 2; j++)
+                    {
+                        weaponInHand.transform.GetChild(i).GetComponent<Renderer>().materials[j].color = customColorList[data.player.weapon[i].partColor[j].id].color;
+                    }
+                }
+                
             }
             else
             {
                 weaponInHand.transform.GetChild(i).gameObject.SetActive(false);
             }
+
         }
     }
 
