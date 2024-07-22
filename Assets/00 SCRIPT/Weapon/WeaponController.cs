@@ -153,8 +153,7 @@ public class WeaponController : MonoBehaviour
         {
             if (attacker != null)
             {
-                attacker.gameObject.GetComponentInChildren<ParticleSystemController>().StartLevelUpParticle();
-                attacker.GetComponent<PlayerController>().ScaleCharacter();
+                attacker.GetComponent<PlayerController>().AddLevel(collision.gameObject.GetComponent<PlayerController>().NumScales);
             }
 
             InGameUIManager.Instance.UpdateAliveEnemy();

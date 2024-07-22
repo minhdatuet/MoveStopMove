@@ -268,22 +268,22 @@ public class EnemyController : PlayerController
             if (CONSTANT.ANGLE_SPLIT_SCREEN - 90 < angle && angle <= 90 - CONSTANT.ANGLE_SPLIT_SCREEN)
             {
                 newPos = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(Mathf.Deg2Rad * angle), Screen.height, 0);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.2f - 0.05f * playerController.CurrScale, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.25f - 0.05f * playerController.CurrScale, 0);
             }
             else if (angle > 90 - CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 90 + CONSTANT.ANGLE_SPLIT_SCREEN)
             {
                 newPos = new Vector3(Screen.width, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 - angle)), 0);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(-0.03f - 0.07f * playerController.CurrScale, -0.2f, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(-0.1f - 0.07f * playerController.CurrScale, -0.2f, 0);
             }
             else if ((angle > 90 + CONSTANT.ANGLE_SPLIT_SCREEN && angle <= 180) || (angle <= -CONSTANT.ANGLE_SPLIT_SCREEN - 90 && angle >= -180))
             {
                 newPos = new Vector3(Screen.width / 2 + Screen.height / 2 * Mathf.Tan(-Mathf.Deg2Rad * angle), 0, 0);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, -0.1f + 0.12f * playerController.CurrScale, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0, 0.12f * playerController.CurrScale, 0);
             }
             else
             {
                 newPos = new Vector3(0, Screen.height / 2 + Screen.width / 2 * Mathf.Tan(Mathf.Deg2Rad * (90 + angle)), 0);
-                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.03f + 0.07f * playerController.CurrScale, -0.2f, 0);
+                secondLevelDisplay.GetComponent<LevelDisplay>().offset = new Vector3(0.1f + 0.07f * playerController.CurrScale, -0.2f, 0);
             }
             
             newPos.x -= Screen.width / 2;

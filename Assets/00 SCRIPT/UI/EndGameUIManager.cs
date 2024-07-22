@@ -12,7 +12,9 @@ public class EndGameUIManager : Singleton<EndGameUIManager>
     [SerializeField] Text rankText;
     [SerializeField] Slider bestRankSlider;
     [SerializeField] Slider rankSlider;
+    [SerializeField] GameObject hairContainer;
     int minRank = 50;
+    int hairIndex;
 
     private void Start()
     {
@@ -77,5 +79,20 @@ public class EndGameUIManager : Singleton<EndGameUIManager>
         {
             bestRankSlider.value = (minRank - SaveLoadManager.Instance.LoadData().rank) * 1.0f / minRank;
         }
+    }
+
+    public void RandomSkin()
+    {
+        hairIndex = Random.RandomRange(0, 9);
+        hairContainer.transform.GetChild(hairIndex).gameObject.SetActive(true);
+    }
+
+    public void ClaimSkin()
+    {
+        Debug.Log("SKIN" +  hairIndex);
+        GameData gameData = SaveLoadManager.Instance.LoadData();
+        gameData.player.hair[hairIndex].isTrying = true;
+        SaveLoadManager.Instance.SaveData(gameData);
+        Debug.Log(SaveLoadManager.Instance.LoadData().player.hair[hairIndex].isTrying);
     }
 }

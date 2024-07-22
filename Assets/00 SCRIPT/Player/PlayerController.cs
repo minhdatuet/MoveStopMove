@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         set { radiusAttack = value; }
     }
     Transform targetEnemy;
-    [SerializeField] protected float attackForce = 4.0f; // Lực bay (tốc độ bay) của đạn
+    [SerializeField] protected float attackForce = 5.0f; // Lực bay (tốc độ bay) của đạn
     [SerializeField] protected float attackOffset = 0.7f; // Khoảng cách từ nhân vật tới vị trí xuất phát của đạn
     [SerializeField] protected float scaleRate = 1.1f; // Tỉ lệ phóng đại khi bắn trúng enemy
     [SerializeField] protected float currScale = 1.0f; // Tỉ lệ phóng đại hiện tại
@@ -46,15 +46,26 @@ public class PlayerController : MonoBehaviour
         get { return currScale; }
         set { currScale = value; }
     }
-    protected int level = 1;
+    protected int level = 0;
     public int Level
     {
         get { return level; }
         set { level = value; }
     }
+    protected int numScales = 1;
+    public int NumScales
+    {
+        get { return numScales; }
+        set { numScales = value; }
+    }
     [SerializeField] protected GameObject levelDisplayPrefab;
     [SerializeField] protected GameObject levelDisplayList;
     protected LevelDisplay levelDisplay;
+    public LevelDisplay LevelDisplay
+    {
+        get { return levelDisplay; }
+        set { levelDisplay = value; }
+    }
     [SerializeField] protected GameObject nameDisplayPrefab;
     [SerializeField] protected GameObject nameDisplayList;
     [SerializeField] GameObject hairContainer;
@@ -218,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
     public void CheckOneTimeSkin()
     {
-        Debug.Log("ONE TIME");
+        data = SaveLoadManager.Instance.LoadData();
         for (int i = 0; i < hairContainer.transform.childCount; i++)
         {
             if (data.player.hair[i].enable)
@@ -285,6 +296,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetAdditionalFeature()
     {
+        levelDisplay.SetLevel(level);
         for (int i = 0; i < hairContainer.transform.childCount; i++)
         {
             if (hairContainer.transform.GetChild(i).gameObject.activeInHierarchy)
@@ -498,22 +510,30 @@ public class PlayerController : MonoBehaviour
         SetWeapon();
     }
 
+
+    public void AddLevel(int enemyNumScales)
+    {
+        level += enemyNumScales;
+        levelDisplay.SetLevel(level);
+        if ((2 <= level && level <= 5 && numScales == 1) || (6 <= level && level <= 10 && numScales == 2) 
+            || (10 <= level && level <= 20 && numScales == 3) || (20 <= level && level <= 40 && numScales == 4) || (level >= 41 && numScales == 5))
+        {
+            numScales++;
+            ScaleCharacter();
+        }
+    }
+
     public void ScaleCharacter()
     {
+        gameObject.GetComponentInChildren<ParticleSystemController>().StartLevelUpParticle();
         if (gameObject.CompareTag("Player"))
         {
             float fov = Camera.main.fieldOfView;
-            //Quaternion camRotate = Camera.main.transform.rotation;
-            //camRotate.x *= scaleRate;
-            //Camera.main.transform.rotation = camRotate;
             fov += 7f;
             Camera.main.fieldOfView = fov;
         }
-        level++;
         if (levelDisplay)
         {
-            //levelDisplay.transform.localScale *= scaleRate;
-            levelDisplay.SetLevel(level);
             levelDisplay.offset *= scaleRate;
         }
         if (nameDisplay)
@@ -551,6 +571,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ScaleBegin()
+    {
+        levelDisplay.SetLevel(2);
+    }
+
     public void DisplayLevelAndName()
     {
         // Tạo đối tượng Level Display từ Prefab
@@ -560,6 +585,7 @@ public class PlayerController : MonoBehaviour
         levelDisplay.offset = new Vector3(0, 1.3f, 0);
         levelDisplay.transform.localRotation = Quaternion.identity;
         levelDisplay.transform.GetChild(0).GetComponent<Image>().color = bodyColor.color;
+
 
         // Tạo đối tượng Level Display từ Prefab
         GameObject nameDisplayObject = Instantiate(nameDisplayPrefab, transform.position, Quaternion.identity, nameDisplayList.transform);

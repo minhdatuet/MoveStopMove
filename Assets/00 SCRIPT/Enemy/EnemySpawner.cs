@@ -113,17 +113,42 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return null;
         int randomLevel;
-        if (playerController.Level < 4)
+        if (playerController.Level < 3)
         {
-            randomLevel = Random.Range(1, 4);
+            randomLevel = Random.Range(0, 3);
         } else
         {
-            randomLevel = Random.Range(playerController.Level - 3, playerController.Level + 1);
+            randomLevel = Random.Range(playerController.Level - 2, playerController.Level + 1);
         }
-        
-        for (int j = 1; j < randomLevel; j++)
+
+        EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
+        enemyController.LevelDisplay.SetLevel(randomLevel);
+        enemyController.Level = randomLevel;
+        if (randomLevel < 2)
         {
-            newEnemy.gameObject.GetComponent<EnemyController>().ScaleCharacter();
+            enemyController.NumScales = 1;
+        } else if ((2 <= randomLevel && randomLevel <= 5))
+        {
+            enemyController.NumScales = 2;
+        }
+        else if (6 <= randomLevel && randomLevel <= 10)
+        {
+            enemyController.NumScales = 3;
+        } else if (10 <= randomLevel && randomLevel <= 20)
+        {
+            enemyController.NumScales = 4;
+        } else if (20 <= randomLevel && randomLevel <= 40)
+        {
+            enemyController.NumScales = 5;
+        }
+        else
+        {
+            enemyController.NumScales = 6;
+        }
+
+        for (int j = 1; j < playerController.NumScales; j++)
+        {
+            enemyController.ScaleCharacter();
         }
 
         
