@@ -53,7 +53,7 @@ public class GameData
         public List<SkinData> hair = new List<SkinData>();
         public List<SkinData> pant = new List<SkinData>();
         public List<SkinData> shield = new List<SkinData>();
-        public SkinData combo = new SkinData();
+        public List<SkinData> combo = new List<SkinData>();
     }
 
     public PlayerData player = new PlayerData();

@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     Transform targetEnemy;
     [SerializeField] protected float attackForce = 5.0f; // Lực bay (tốc độ bay) của đạn
     [SerializeField] protected float attackOffset = 0.7f; // Khoảng cách từ nhân vật tới vị trí xuất phát của đạn
-    [SerializeField] protected float scaleRate = 1.1f; // Tỉ lệ phóng đại khi bắn trúng enemy
+    [SerializeField] protected float scaleRate = 1.2f; // Tỉ lệ phóng đại khi bắn trúng enemy
     [SerializeField] protected float currScale = 1.0f; // Tỉ lệ phóng đại hiện tại
     public float CurrScale
     {
@@ -529,7 +529,7 @@ public class PlayerController : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             float fov = Camera.main.fieldOfView;
-            fov += 7f;
+            fov += 7.3f;
             Camera.main.fieldOfView = fov;
         }
         if (levelDisplay)
